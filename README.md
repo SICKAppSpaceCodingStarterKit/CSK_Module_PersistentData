@@ -8,7 +8,7 @@ Module to provide data storage functionality. Can be used from other modules to 
 
 The app provides data storage functionality, incl. complex data types like Images, EdgeMatcher etc.  
 There is also a GUI available.  
-For further information regarding the internal used functions / events, check out the [documentation](https://raw.githack.com/SICKAppSpaceCodingStarterKit/CSK_Module_PersistentData/main/docu/CSK_Module_PersistentData.html) in the folder "docu".
+For further information regarding the internally used functions / events, check out the [documentation](https://raw.githack.com/SICKAppSpaceCodingStarterKit/CSK_Module_PersistentData/main/docu/CSK_Module_PersistentData.html) in the folder "docu".
 
 ## Information
 
