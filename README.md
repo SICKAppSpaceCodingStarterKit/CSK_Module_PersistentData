@@ -7,16 +7,17 @@ Module to provide data storage functionality. Can be used from other modules to 
 ## How to Run
 
 The app provides data storage functionality, incl. complex data types like Images, EdgeMatcher etc.  
-There is also a UI available.  
-For further information regarding the internal used functions / events check out the [documentation](https://raw.githack.com/SICKAppSpaceCodingStarterKit/CSK_Module_PersistentData/main/docu/CSK_Module_PersistentData.html) in the folder "docu".
+There is also a GUI available.  
+For further information regarding the internal used functions / events, check out the [documentation](https://raw.githack.com/SICKAppSpaceCodingStarterKit/CSK_Module_PersistentData/main/docu/CSK_Module_PersistentData.html) in the folder "docu".
 
 ## Information
 
 Tested on  
-|Device|Firmware|Module version
+|Device|Firmware|Module version|
 |--|--|--|
-|SIM1012|V2.2.0|V4.0.0|
-|SICK AppEngine|V1.5.0|V4.0.1|
+|SICK AppEngine|v1.5.0|v4.0.1|
+|InspectorP631|v4.2.1|v4.0.1|
+|SIM1012|v2.2.0|v4.0.0|
 
 This module is part of the SICK AppSpace Coding Starter Kit developing approach.  
 It is programmed in an object-oriented way. Some of these modules use kind of "classes" in Lua to make it possible to reuse code / classes in other projects.  
