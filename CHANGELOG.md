@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 4.0.1
+
+### Bugfix
+- Module expected to always have a parameter for instance 1. If this was not the case it did not return amount of instances within function 'getModuleParameterName' but it is necessary for other modules to load setup correctly event without saving parameters for instance 1.
+
 ## Release 4.0.0
 
 ### Improvements

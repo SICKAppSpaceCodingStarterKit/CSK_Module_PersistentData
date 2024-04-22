@@ -194,7 +194,11 @@ local function getModuleParameterName(module, instance)
         return persistentData_Model.parameters.parameterNames[pos], persistentData_Model.parameters.loadOnReboot[pos], persistentData_Model.parameters.totalInstances[module]
       end
     else
-      return nil
+      if persistentData_Model.parameters.totalInstances[module] then
+        return nil, nil, persistentData_Model.parameters.totalInstances[module]
+      else
+        return nil
+      end
     end
   else
     if persistentData_Model.parameters.parameterNames[module] then
