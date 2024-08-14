@@ -23,6 +23,8 @@
 {empty} +
 4) This module will notify a "CSK_PersistentData.OnInitialDataLoaded" event, so that other modules can register on that event to load their specific parameters as soon as they are available. +
 {empty} +
+5) Other modules can react on 'CSK_PersistentData.OnResetAllModules' event, to load their default setup. +
+{empty} +
 *How to use:* +
 *Save* +
 1) Via "addParameter" it is possible to send (multiple times) data as a Container to this module and to store it with a specific parameter name. (e.g. "cameraSetup1"). +
@@ -89,12 +91,32 @@
                 <event name="OnNewUserManagementTrigger">
                     <desc>Notify trigger to update UserManagement status.</desc>
                 </event>
+                <event name="OnNewStatusCSKStyle">
+                    <desc>Notify UI style to use for CSK modules.</desc>
+                    <param desc="UI style" multiplicity="1" name="theme" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleVersion">
+                    <desc>Notify version of module.</desc>
+                    <param desc="Version" multiplicity="1" name="version" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleIsActive">
+                    <desc>Notify if module can be used on device.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnResetAllModules">
+                    <desc>Notify event to trigger a reset for all CSK modules.</desc>
+                </event>
+                <event name="OnNewDataToLoad">
+                    <desc>Notify event to trigger other modules to load their related data.</desc>
+                    <param alias="Container" desc="Data container with parameters to load." multiplicity="1" name="data" type="object"/>
+                </event>
                 <function name="saveData">
                     <desc>Save current parameter set.</desc>
                     <return desc="Success of saving parameters." multiplicity="1" name="success" type="bool"/>
                 </function>
                 <function name="loadContent">
                     <desc>Load set of parameters out of path (see "setPath").</desc>
+                    <param desc="Optionally select if other modules should be triggered to load their parameters (as long as their &quot;Load on reboot&quot; flag ist active)." multiplicity="?" name="noModuleUpdate" type="bool"/>
                     <return desc="Success of loading parameter set." multiplicity="1" name="success" type="bool"/>
                 </function>
                 <function name="getParameter">
@@ -160,15 +182,39 @@
                     <desc>Check if upload transfer was succesfull.</desc>
                     <param desc="Status of file transfer" multiplicity="1" name="status" type="bool"/>
                 </function>
+                <function name="saveAllModuleConfigs">
+                    <desc>Function to trigger all CSK modules to save their configuration and additionally activate their "Load config on app start"  flag.</desc>
+                    <param alias="Container" desc="Optional list of modules to save." multiplicity="?" name="moduleList" type="object"/>
+                </function>
+                <function name="setUIStyle">
+                    <desc>Function to set UI style.</desc>
+                    <param desc="Style" multiplicity="1" name="style" type="string"/>
+                </function>
+                <function name="reloadApps">
+                    <desc>Function to reload all apps.</desc>
+                </function>
+                <function name="rebootDevice">
+                    <desc>Function to reboot device.</desc>
+                </function>
+                <function name="getStatusModuleActive">
+                    <desc>Function to get status if module is active.</desc>
+                    <return desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="resetAllModules">
+                    <desc>Function to reset all modules (other modules need a function called 'resetModule').</desc>
+                </function>
+                <function name="removeData">
+                    <desc>Remove all data of current DataSet.</desc>
+                </function>
             </serves>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">4.0.1</meta>
+        <meta key="version">4.1.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
         <meta key="crown2-flow-engine">false</meta>
-        <meta key="LuaLoadAllEngineAPI">false</meta>
+        <meta key="LuaLoadAllEngineAPI">true</meta>
         <entry default="CSK_Module_PersistentData.lua" path="scripts"/>
     </application>
 </manifest>

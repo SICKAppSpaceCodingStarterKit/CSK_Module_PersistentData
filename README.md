@@ -2,7 +2,7 @@
 
 Module to provide data storage functionality. Can be used from other modules to load / save parameters.  
 
-![](https://github.com/SICKAppSpaceCodingStarterKit/CSK_Module_PersistentData/blob/main/docu/media/UI_Screenshot.png)
+![](./docu/media/UI_Screenshot.png)
 
 ## How to Run
 
@@ -13,10 +13,13 @@ For further information regarding the internally used functions / events, check 
 ## Information
 
 Tested on  
+
 |Device|Firmware|Module version|
 |--|--|--|
+|SICK AppEngine|v1.7.0|v4.1.0|
 |SICK AppEngine|v1.5.0|v4.0.1|
 |InspectorP631|v4.2.1|v4.0.1|
+|SIM1012|v2.4.2|v4.1.0|
 |SIM1012|v2.2.0|v4.0.0|
 
 This module is part of the SICK AppSpace Coding Starter Kit developing approach.  

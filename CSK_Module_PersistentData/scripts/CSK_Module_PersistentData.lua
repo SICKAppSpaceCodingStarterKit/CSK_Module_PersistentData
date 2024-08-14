@@ -43,6 +43,10 @@ _G.logHandle:applyConfig()
 -- Check this script regarding PersistentData_Model parameters and functions
 _G.persistentData_Model = require('Configuration/PersistentData/PersistentData_Model')
 
+if _G.availableAPIs.default == false then
+  _G.logger:warning("CSK_PersistentData: Relevant CROWN(s) not available on device. Module is not supported...")
+end
+
 --**************************************************************************
 --**********************End Global Scope ***********************************
 --**************************************************************************

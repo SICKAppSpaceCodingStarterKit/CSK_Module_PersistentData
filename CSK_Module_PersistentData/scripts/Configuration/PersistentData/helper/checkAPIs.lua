@@ -5,15 +5,17 @@
 
 local availableAPIs = {}
 
+-- Function to load all default APIs
 local function loadAPIs()
   CSK_PersistentData = require 'API.CSK_PersistentData'
+
+  Log = require 'API.Log'
+  Log.Handler = require 'API.Log.Handler'
+  Log.SharedLogger = require 'API.Log.SharedLogger'
 
   Container = require 'API.Container'
   Engine = require 'API.Engine'
   File = require 'API.File'
-  Log = require 'API.Log'
-  Log.Handler = require 'API.Log.Handler'
-  Log.SharedLogger = require 'API.Log.SharedLogger'
   Object = require 'API.Object'
   Parameters = require 'API.Parameters'
   Timer = require 'API.Timer'
