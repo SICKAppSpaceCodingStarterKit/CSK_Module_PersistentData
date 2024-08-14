@@ -12,6 +12,7 @@ _G.logger = Log.SharedLogger.create('ModuleLogger')
 local json = require("Configuration.PersistentData.helper.Json")
 local scriptParams = Script.getStartArgument() -- Get parameters from model
 
+--- Function to trigger other modules to load their specific parameters
 ---@param data Container Data container with parameters to load.
 local function handleOnNewDataToLoad(data)
   local dataContent = helperFuncs.convertContainer2Table(data)
