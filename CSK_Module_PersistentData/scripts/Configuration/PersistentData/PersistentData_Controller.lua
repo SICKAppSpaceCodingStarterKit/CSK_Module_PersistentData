@@ -342,7 +342,12 @@ end
 Script.serveFunction('CSK_PersistentData.reloadApps', reloadApps)
 
 local function rebootDevice()
-  Engine.reboot('Reboot triggered via CSK_PersistentData module.')
+  local typeName = Engine.getTypeName()
+  if typeName == 'AppStudioEmulator' or typeName == 'SICK AppEngine' then
+    _G.logger:warning(nameOfModule .. ': Function to reboot not supported by device!')
+  else
+    Engine.reboot('Reboot triggered via CSK_PersistentData module.')
+  end
 end
 Script.serveFunction('CSK_PersistentData.rebootDevice', rebootDevice)
 
