@@ -32,6 +32,27 @@
                     <stacked-pane id="SP_LoggedIn" value="true">
                         <layout-row id="RowLayout8">
                             <layout-column id="ColumnLayout9" style="align-items: stretch">
+                                <stacked-view id="SV_Feedback">
+                                    <stacked-pane id="SP_Empty" value="EMPTY"></stacked-pane>
+                                    <stacked-pane id="SP_OK" value="OK">
+                                        <davinci-callout id="CO_Ok" type="info">
+                                            <span>Worked</span>
+                                        </davinci-callout>
+                                    </stacked-pane>
+                                    <stacked-pane id="SP_Err" value="ERR">
+                                        <davinci-callout id="CO_Error" type="warning">
+                                            <span>Error</span>
+                                        </davinci-callout>
+                                    </stacked-pane>
+                                    <stacked-pane id="SP_Reboot" value="LOG">
+                                        <davinci-callout id="CO_Reboot" type="warning">
+                                            <span>Please check log...</span>
+                                        </davinci-callout>
+                                    </stacked-pane>
+                                    <crown-edpws-binding property="value"
+                                        name="CSK_PersistentData/OnNewFeedbackStatus" update-on-resume>
+                                    </crown-edpws-binding>
+                                </stacked-view>
                                 <davinci-tabs id="Tabs_Data_Style_ReBootStart" type="modern">
                                     <davinci-tab id="Tab_Data" icon="editor/format_list_bulleted" title="Data">
                                         <layout-row id="RowLayout110">
@@ -42,22 +63,6 @@
                                                     class="myCustomFrameLabel_CSK_Module_PersistentData" value=""
                                                     label="Parameter Dataset" style="align-self: flex-start">
                                                 </davinci-value-display>
-                                                <stacked-view id="SV_Feedback">
-                                                    <stacked-pane id="SP_Empty" value="EMPTY"></stacked-pane>
-                                                    <stacked-pane id="SP_OK" value="OK">
-                                                        <davinci-callout id="CO_Ok" type="info">
-                                                            <span>Worked</span>
-                                                        </davinci-callout>
-                                                    </stacked-pane>
-                                                    <stacked-pane id="SP_Err" value="ERR">
-                                                        <davinci-callout id="CO_Error" type="warning">
-                                                            <span>Error</span>
-                                                        </davinci-callout>
-                                                    </stacked-pane>
-                                                    <crown-edpws-binding property="value"
-                                                        name="CSK_PersistentData/OnNewFeedbackStatus" update-on-resume>
-                                                    </crown-edpws-binding>
-                                                </stacked-view>
                                                 <layout-row id="RowLayout11">
                                                     <layout-column id="ColumnLayout4"
                                                         class="myCustomBorderRight_CSK_Module_PersistentData"
@@ -180,13 +185,11 @@
                                                                     <layout-column id="ColumnLayout21"
                                                                         style="align-items: center">
                                                                         <davinci-button id="B_RemoveAll"
-                                                                            class="myCustomButton_CSK_Module_PersistentData"
-                                                                            type="outline" icon-position="append"
-                                                                            icon="content/delete_sweep"
-                                                                            title="Remove full DataSet">
+                                                                            class="myCustomButton_CSK_Module_PersistentData" type="outline"
+                                                                            icon-position="append" icon="content/delete_sweep"
+                                                                            title="Remove full DataSet. Save Persistent Data afterwards to make this permanent.">
                                                                             <span></span>
-                                                                            <crown-binding event="submit"
-                                                                                name="CSK_PersistentData/removeData"
+                                                                            <crown-binding event="submit" name="CSK_PersistentData/removeData"
                                                                                 auto-commit>
                                                                             </crown-binding>
                                                                         </davinci-button>

@@ -32,10 +32,21 @@
 3) Via "setPath" it can be defined, where to store the full parameter dataset (including all available module parameters). +
 4) Via "saveData" the module will save the parameter dataset within a file defined with "setPath". +
 {empty} +
+INFO: It is also possible to trigger all other CSK modules to send their currenty used parameters by calling "saveAllModuleConfigs". +
+After that, do not forget to save the received data as stated in step 4. +
+{empty} +
  *Load* +
-1) Try to load saved parameter dataset via "loadContent" out of file defined via "setPath". +
+1) Try to load saved parameter dataset via "loadContent" (see documentation) out of file defined via "setPath". +
 1.1) Info: With app/device reboot, the module will try this automatically and will notify the event "OnInitialDataLoaded" if successful. +
-2) Other modules can now load their specific parameter via "getParameter". +</desc>
+2) Other modules can now load their specific parameter via "getParameter". +
+2.1) To trigger all other modules to set the new loaded parameters, call 'saveData' and 'reloadApps'. +
+{empty} +
+*Remove specific parameter* +
+1) Remove a specific parameter within the currently active DataSet via "removeParameter". +
+{empty} +
+*Remove full DataSet* +
+1) Internally clear data of current active DataSet with "removeData". This will not change the parameters within the persistent data file (see next step). +
+2) Make sure to save the new DataSet to the persistent data file via "saveData".</desc>
             <serves>
                 <event name="OnNewDataPath">
                     <desc>Notify path of parameter set.</desc>
@@ -204,7 +215,12 @@
                     <desc>Function to reset all modules (other modules need a function called 'resetModule').</desc>
                 </function>
                 <function name="removeData">
-                    <desc>Remove all data of current DataSet.</desc>
+                    <desc>Remove all data of current DataSet. +
+To make this permanent, it is needed to save the persistent data afterwards (see 'saveData').</desc>
+                </function>
+                <function name="getCurrentParameterInfo">
+                    <desc>Function to get info what parameter file is currently in use.</desc>
+                    <return desc="Name of parameter file." multiplicity="1" name="parameterName" type="string"/>
                 </function>
             </serves>
         </crown>

@@ -118,7 +118,7 @@ local function handleOnExpiredTmrPersistendData()
 
   updateUserLevel()
 
-  Script.notifyEvent("PersistentData_OnNewStatusModuleVersion", persistentData_Model.version)
+  Script.notifyEvent("PersistentData_OnNewStatusModuleVersion", 'v' .. persistentData_Model.version)
   Script.notifyEvent("PersistentData_OnNewStatusCSKStyle", persistentData_Model.parameters.styleForUI or 'None')
   Script.notifyEvent("PersistentData_OnNewStatusModuleIsActive", _G.availableAPIs.default)
   Script.notifyEvent('PersistentData_OnNewDataPath', persistentData_Model.path)
@@ -185,6 +185,11 @@ local function getParameterList()
  return persistentData_Model.contentList
 end
 Script.serveFunction("CSK_PersistentData.getParameterList", getParameterList)
+
+local function getCurrentParameterInfo()
+  return persistentData_Model.path
+end
+Script.serveFunction('CSK_PersistentData.getCurrentParameterInfo', getCurrentParameterInfo)
 
 local function setModuleParameterName(module, name, loadOnReboot, instance, totalInstances)
   if instance then
@@ -345,6 +350,7 @@ local function rebootDevice()
   local typeName = Engine.getTypeName()
   if typeName == 'AppStudioEmulator' or typeName == 'SICK AppEngine' then
     _G.logger:warning(nameOfModule .. ': Function to reboot not supported by device!')
+    Script.notifyEvent('PersistentData_OnNewFeedbackStatus', 'LOG')
   else
     Engine.reboot('Reboot triggered via CSK_PersistentData module.')
   end
