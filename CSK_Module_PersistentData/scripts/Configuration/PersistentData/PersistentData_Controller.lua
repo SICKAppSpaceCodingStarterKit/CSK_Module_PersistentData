@@ -18,10 +18,10 @@ local tmrPersistendData = Timer.create()
 tmrPersistendData:setExpirationTime(300)
 tmrPersistendData:setPeriodic(false)
 
--- Timer to wait if all modules send their parameters
-local tmrSaveData = Timer.create()
-tmrSaveData:setExpirationTime(500)
-tmrSaveData:setPeriodic(false)
+-- Timer to check if all triggerd modules send their parametsr
+local tmrCheckAllModules = Timer.create()
+tmrCheckAllModules:setExpirationTime(10000)
+tmrCheckAllModules:setPeriodic(false)
 
 local currentSelectedParameters = '' -- Selected Parameter
 
@@ -191,6 +191,25 @@ local function getCurrentParameterInfo()
 end
 Script.serveFunction('CSK_PersistentData.getCurrentParameterInfo', getCurrentParameterInfo)
 
+--- Function to check if all modules send their parameters within 5 seconds
+local function handleOnCheckAllModulesSaved()
+  local listOfFailedModules = ''
+  local waitForOthers = false
+  for key, value in pairs(persistentData_Model.moduleSaveCheck) do
+    if value == true then
+      listOfFailedModules = listOfFailedModules .. tostring(key) .. ','
+      waitForOthers = true
+    end
+  end
+
+  if waitForOthers then
+    _G.logger:warning(nameOfModule .. ": Something went wrong while trying to save the parameters of theses modules: " .. string.sub(listOfFailedModules, 1, #listOfFailedModules-1))
+    persistentData_Model.saveData()
+  end
+  persistentData_Model.moduleSaveCheck = {}
+end
+Timer.register(tmrCheckAllModules, 'OnExpired', handleOnCheckAllModulesSaved)
+
 local function setModuleParameterName(module, name, loadOnReboot, instance, totalInstances)
   if instance then
     local pos = module .. instance
@@ -212,6 +231,24 @@ local function setModuleParameterName(module, name, loadOnReboot, instance, tota
 
   CSK_PersistentData.addParameter(persistentData_Model.funcs.convertTable2Container(persistentData_Model.parameters), 'PersistentData_InitialParameterNames')
 
+  persistentData_Model.moduleSaveCheck[module] = false
+
+  local waitForOthers = false
+  local multiSaveActive = false
+  for key, value in pairs(persistentData_Model.moduleSaveCheck) do
+    multiSaveActive = true
+    if value == true then
+      waitForOthers = true
+    end
+  end
+  if multiSaveActive then
+    if not waitForOthers then
+      persistentData_Model.saveData()
+      persistentData_Model.moduleSaveCheck = {}
+    else
+      tmrCheckAllModules:start()
+    end
+  end
 end
 Script.serveFunction("CSK_PersistentData.setModuleParameterName", setModuleParameterName)
 
@@ -272,14 +309,11 @@ local function fileUploadFinished(status)
 end
 Script.serveFunction('CSK_PersistentData.fileUploadFinished', fileUploadFinished)
 
---- Function to save data after all modules send their parameters (needed as the modules send their parameters with async function calls)
-local function handleOnExpiredSaveData()
-  persistentData_Model.saveData()
-end
-Timer.register(tmrSaveData, 'OnExpired', handleOnExpiredSaveData)
-
 local function saveAllModuleConfigs(moduleList)
   local cskCrowns = {}
+
+  persistentData_Model.moduleSaveCheck = {}
+  tmrCheckAllModules:stop()
 
   if moduleList then
     local dataTable = persistentData_Model.funcs.convertContainer2Table(moduleList)
@@ -307,12 +341,14 @@ local function saveAllModuleConfigs(moduleList)
                 Script.callFunctionAsync(value.. '.setInstance', i)
                 Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
                 Script.callFunctionAsync(value .. '.sendParameters', true)
+                persistentData_Model.moduleSaveCheck[value] = true
               else
                 local setSelectedInstanceExist = Script.isServedAsFunction(value .. '.setSelectedInstance')
                 if setSelectedInstanceExist then
                   Script.callFunctionAsync(value.. '.setSelectedInstance', i)
                   Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
                   Script.callFunctionAsync(value .. '.sendParameters', true)
+                  persistentData_Model.moduleSaveCheck[value] = true
                 else
                   _G.logger:warning(nameOfModule .. ': Set instance does not exist in module ' .. tostring(value))
                 end
@@ -322,11 +358,13 @@ local function saveAllModuleConfigs(moduleList)
         else
           Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
           Script.callFunctionAsync(value .. '.sendParameters', true)
+          if value ~= 'CSK_SensorAppOverview' then
+            persistentData_Model.moduleSaveCheck[value] = true
+          end
         end
       end
     end
   end
-  tmrSaveData:start()
 end
 Script.serveFunction('CSK_PersistentData.saveAllModuleConfigs', saveAllModuleConfigs)
 

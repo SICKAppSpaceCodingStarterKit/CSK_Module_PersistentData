@@ -27,6 +27,8 @@ persistentData_Model.tempPath = '/ram/CSK_PersistentData_Temp.bin'
 persistentData_Model.initialLoading = false -- status to check if parameter dataset was successfully loaded on app/device reboot
 persistentData_Model.version = Engine.getCurrentAppVersion() -- Version of module
 
+persistentData_Model.moduleSaveCheck = {} -- Check if modules successfully send their parameters if they all were triggered to save
+
 -- Handle processing to trigger other modules to load their specific parameters
 Script.startScript('CSK_Module_PersistentData_AsyncLoadData') -- Additional thread needed, as otherwise the module will block itself
 
