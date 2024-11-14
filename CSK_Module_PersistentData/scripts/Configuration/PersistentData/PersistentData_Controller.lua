@@ -331,35 +331,38 @@ local function saveAllModuleConfigs(moduleList)
     if pos then
       local exist = Script.isServedAsFunction(value .. '.sendParameters')
       if exist then
-        local multiExist = Script.isServedAsFunction(value .. '.getInstancesAmount')
-        if multiExist then
-          local suc, amount = Script.callFunction(value .. '.getInstancesAmount')
-          if suc then
-            for i=1, amount do
-              local setInstanceExist = Script.isServedAsFunction(value .. '.setInstance')
-              if setInstanceExist then
-                Script.callFunctionAsync(value.. '.setInstance', i)
-                Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
-                Script.callFunctionAsync(value .. '.sendParameters', true)
-                persistentData_Model.moduleSaveCheck[value] = true
-              else
-                local setSelectedInstanceExist = Script.isServedAsFunction(value .. '.setSelectedInstance')
-                if setSelectedInstanceExist then
-                  Script.callFunctionAsync(value.. '.setSelectedInstance', i)
-                  Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
-                  Script.callFunctionAsync(value .. '.sendParameters', true)
-                  persistentData_Model.moduleSaveCheck[value] = true
-                else
-                  _G.logger:warning(nameOfModule .. ': Set instance does not exist in module ' .. tostring(value))
+        local getStatus = Script.isServedAsFunction(value .. '.getStatusModuleActive')
+        if getStatus then
+          local isActive = Script.callFunction(value .. '.getStatusModuleActive')
+          if isActive then
+            local multiExist = Script.isServedAsFunction(value .. '.getInstancesAmount')
+            if multiExist then
+              local suc, amount = Script.callFunction(value .. '.getInstancesAmount')
+              if suc then
+                for i=1, amount do
+                  local setInstanceExist = Script.isServedAsFunction(value .. '.setInstance')
+                  if setInstanceExist then
+                    Script.callFunctionAsync(value.. '.setInstance', i)
+                    Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
+                    Script.callFunctionAsync(value .. '.sendParameters', true)
+                    persistentData_Model.moduleSaveCheck[value] = true
+                  else
+                    local setSelectedInstanceExist = Script.isServedAsFunction(value .. '.setSelectedInstance')
+                    if setSelectedInstanceExist then
+                      Script.callFunctionAsync(value.. '.setSelectedInstance', i)
+                      Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
+                      Script.callFunctionAsync(value .. '.sendParameters', true)
+                      persistentData_Model.moduleSaveCheck[value] = true
+                    else
+                      _G.logger:warning(nameOfModule .. ': Set instance does not exist in module ' .. tostring(value))
+                    end
+                  end
                 end
               end
+            else
+              Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
+              Script.callFunctionAsync(value .. '.sendParameters', true)
             end
-          end
-        else
-          Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
-          Script.callFunctionAsync(value .. '.sendParameters', true)
-          if value ~= 'CSK_SensorAppOverview' then
-            persistentData_Model.moduleSaveCheck[value] = true
           end
         end
       end
