@@ -18,9 +18,17 @@ local tmrPersistendData = Timer.create()
 tmrPersistendData:setExpirationTime(300)
 tmrPersistendData:setPeriodic(false)
 
+-- Timer to check if all triggerd modules send their parametsr
+local tmrCheckAllModules = Timer.create()
+tmrCheckAllModules:setExpirationTime(10000)
+tmrCheckAllModules:setPeriodic(false)
+
 local currentSelectedParameters = '' -- Selected Parameter
 
 -- ************************ UI Events Start ********************************
+Script.serveEvent('CSK_PersistentData.OnNewStatusModuleVersion', 'PersistentData_OnNewStatusModuleVersion')
+Script.serveEvent('CSK_PersistentData.OnNewStatusCSKStyle', 'PersistentData_OnNewStatusCSKStyle')
+Script.serveEvent('CSK_PersistentData.OnNewStatusModuleIsActive', 'PersistentData_OnNewStatusModuleIsActive')
 
 Script.serveEvent("CSK_PersistentData.OnNewDataPath", "PersistentData_OnNewDataPath")
 Script.serveEvent("CSK_PersistentData.OnNewFeedbackStatus", "PersistentData_OnNewFeedbackStatus")
@@ -38,6 +46,9 @@ Script.serveEvent("CSK_PersistentData.OnUserLevelAdminActive", "PersistentData_O
 
 Script.serveEvent("CSK_PersistentData.OnInitialDataLoaded", "PersistentData_OnInitialDataLoaded")
 Script.serveEvent('CSK_PersistentData.OnInstanceAmountAvailable', 'PersistentData_OnInstanceAmountAvailable')
+
+Script.serveEvent('CSK_PersistentData.OnResetAllModules', 'PersistentData_OnResetAllModules')
+Script.serveEvent('CSK_PersistentData.OnNewDataToLoad', 'PersistentData_OnNewDataToLoad')
 
 Script.serveEvent('CSK_PersistentData.OnNewUserManagementTrigger', 'PersistentData_OnNewUserManagementTrigger')
 
@@ -107,6 +118,9 @@ local function handleOnExpiredTmrPersistendData()
 
   updateUserLevel()
 
+  Script.notifyEvent("PersistentData_OnNewStatusModuleVersion", 'v' .. persistentData_Model.version)
+  Script.notifyEvent("PersistentData_OnNewStatusCSKStyle", persistentData_Model.parameters.styleForUI or 'None')
+  Script.notifyEvent("PersistentData_OnNewStatusModuleIsActive", _G.availableAPIs.default)
   Script.notifyEvent('PersistentData_OnNewDataPath', persistentData_Model.path)
   Script.notifyEvent('PersistentData_OnNewContent', persistentData_Model.contentList)
   Script.notifyEvent('PersistentData_OnNewFeedbackStatus', 'EMPTY')
@@ -125,6 +139,18 @@ local function pageCalled()
   return ''
 end
 Script.serveFunction("CSK_PersistentData.pageCalled", pageCalled)
+
+local function getStatusModuleActive()
+  return _G.availableAPIs.default
+end
+Script.serveFunction('CSK_PersistentData.getStatusModuleActive', getStatusModuleActive)
+
+local function setUIStyle(style)
+  persistentData_Model.parameters.styleForUI = style
+  Parameters.set('CSK_UI_Style', style)
+  Script.notifyEvent("PersistentData_OnNewStatusCSKStyle", persistentData_Model.parameters.styleForUI)
+end
+Script.serveFunction('CSK_PersistentData.setUIStyle', setUIStyle)
 
 local function getVersion()
   if _APPNAME == 'CSK_Module_PersistentData' then
@@ -146,7 +172,7 @@ Script.serveFunction("CSK_PersistentData.addParameter", addParameter)
 local function getParameter(name)
   if persistentData_Model.data[name] ~= nil then
     local dataContainer = persistentData_Model.funcs.convertTable2Container(persistentData_Model.data[name])
-    _G.logger:info(nameOfModule .. ": Provide parameter: " .. tostring(name))
+    _G.logger:fine(nameOfModule .. ": Provide parameter: " .. tostring(name))
     return dataContainer
   else
     _G.logger:info(nameOfModule .. ": Parameter not available: " .. tostring(name))
@@ -160,27 +186,69 @@ local function getParameterList()
 end
 Script.serveFunction("CSK_PersistentData.getParameterList", getParameterList)
 
+local function getCurrentParameterInfo()
+  return persistentData_Model.path
+end
+Script.serveFunction('CSK_PersistentData.getCurrentParameterInfo', getCurrentParameterInfo)
+
+--- Function to check if all modules send their parameters within 5 seconds
+local function handleOnCheckAllModulesSaved()
+  local listOfFailedModules = ''
+  local waitForOthers = false
+  for key, value in pairs(persistentData_Model.moduleSaveCheck) do
+    if value == true then
+      listOfFailedModules = listOfFailedModules .. tostring(key) .. ','
+      waitForOthers = true
+    end
+  end
+
+  if waitForOthers then
+    _G.logger:warning(nameOfModule .. ": Something went wrong while trying to save the parameters of theses modules: " .. string.sub(listOfFailedModules, 1, #listOfFailedModules-1))
+    persistentData_Model.saveData()
+  end
+  persistentData_Model.moduleSaveCheck = {}
+end
+Timer.register(tmrCheckAllModules, 'OnExpired', handleOnCheckAllModulesSaved)
+
 local function setModuleParameterName(module, name, loadOnReboot, instance, totalInstances)
   if instance then
     local pos = module .. instance
-    _G.logger:info(nameOfModule .. ': Set module parameter name: ' .. tostring(name) .. ' of instance no.' .. tostring(instance) .. ' of module ' .. tostring(module))
+    _G.logger:fine(nameOfModule .. ': Set module parameter name: ' .. tostring(name) .. ' of instance no.' .. tostring(instance) .. ' of module ' .. tostring(module))
     persistentData_Model.parameters.parameterNames[pos] = name
     persistentData_Model.parameters.loadOnReboot[pos] = loadOnReboot
 
     if totalInstances then
       -- Store amount of instances to create for this module
-      _G.logger:info(nameOfModule .. ': Set total instances: ' .. tostring(totalInstances))
+      _G.logger:fine(nameOfModule .. ': Set total instances: ' .. tostring(totalInstances))
       persistentData_Model.parameters.totalInstances[module] = totalInstances
     end
 
   else
-    _G.logger:info(nameOfModule .. ': Set module parameter name: "' .. tostring(name) .. '" of module ' .. tostring(module))
+    _G.logger:fine(nameOfModule .. ': Set module parameter name: "' .. tostring(name) .. '" of module ' .. tostring(module))
     persistentData_Model.parameters.parameterNames[module] = name
     persistentData_Model.parameters.loadOnReboot[module] = loadOnReboot
   end
 
   CSK_PersistentData.addParameter(persistentData_Model.funcs.convertTable2Container(persistentData_Model.parameters), 'PersistentData_InitialParameterNames')
 
+  persistentData_Model.moduleSaveCheck[module] = false
+
+  local waitForOthers = false
+  local multiSaveActive = false
+  for key, value in pairs(persistentData_Model.moduleSaveCheck) do
+    multiSaveActive = true
+    if value == true then
+      waitForOthers = true
+    end
+  end
+  if multiSaveActive then
+    if not waitForOthers then
+      persistentData_Model.saveData()
+      persistentData_Model.moduleSaveCheck = {}
+    else
+      tmrCheckAllModules:start()
+    end
+  end
 end
 Script.serveFunction("CSK_PersistentData.setModuleParameterName", setModuleParameterName)
 
@@ -212,7 +280,7 @@ Script.serveFunction("CSK_PersistentData.getModuleParameterName", getModuleParam
 
 local function setSelectedParameterName(selection)
   if persistentData_Model.data[selection] then
-    _G.logger:info(nameOfModule .. ': Selected parameter: ' .. tostring(selection))
+    _G.logger:fine(nameOfModule .. ': Selected parameter: ' .. tostring(selection))
     currentSelectedParameters = selection
   else
     _G.logger:info(nameOfModule .. ': Parameter not available: ' .. tostring(selection))
@@ -223,7 +291,7 @@ Script.serveFunction("CSK_PersistentData.setSelectedParameterName", setSelectedP
 
 local function removeParameterViaUI()
   if currentSelectedParameters ~= '' then
-    _G.logger:info(nameOfModule .. ': Remove parameter: ' .. tostring(currentSelectedParameters))
+    _G.logger:fine(nameOfModule .. ': Remove parameter: ' .. tostring(currentSelectedParameters))
     persistentData_Model.removeParameter(currentSelectedParameters)
     currentSelectedParameters = ''
     tmrPersistendData:start()
@@ -234,12 +302,102 @@ end
 Script.serveFunction("CSK_PersistentData.removeParameterViaUI", removeParameterViaUI)
 
 local function fileUploadFinished(status)
-  _G.logger:info(nameOfModule .. ': File upload: ' .. tostring(status))
+  _G.logger:fine(nameOfModule .. ': File upload: ' .. tostring(status))
   if status then
     Script.notifyEvent('PersistentData_OnNewStatusTempFileAvailable', File.exists(persistentData_Model.tempPath))
   end
 end
 Script.serveFunction('CSK_PersistentData.fileUploadFinished', fileUploadFinished)
+
+local function saveAllModuleConfigs(moduleList)
+  local cskCrowns = {}
+
+  persistentData_Model.moduleSaveCheck = {}
+  tmrCheckAllModules:stop()
+
+  if moduleList then
+    local dataTable = persistentData_Model.funcs.convertContainer2Table(moduleList)
+    for key, value in pairs(dataTable) do
+      cskCrowns[key] = 'CSK_' .. value
+    end
+  else
+    -- Get all available CROWNs
+    cskCrowns = Engine.getCrowns()
+  end
+
+  for key, value in pairs(cskCrowns) do
+    -- Check if CROWN is relevant
+    local _, pos = string.find(value, 'CSK_')
+    if pos then
+      local exist = Script.isServedAsFunction(value .. '.sendParameters')
+      if exist then
+        local getStatus = Script.isServedAsFunction(value .. '.getStatusModuleActive')
+        if getStatus then
+          local isActive = Script.callFunction(value .. '.getStatusModuleActive')
+          if isActive then
+            local multiExist = Script.isServedAsFunction(value .. '.getInstancesAmount')
+            if multiExist then
+              local suc, amount = Script.callFunction(value .. '.getInstancesAmount')
+              if suc then
+                for i=1, amount do
+                  local setInstanceExist = Script.isServedAsFunction(value .. '.setInstance')
+                  if setInstanceExist then
+                    Script.callFunctionAsync(value.. '.setInstance', i)
+                    Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
+                    Script.callFunctionAsync(value .. '.sendParameters', true)
+                    persistentData_Model.moduleSaveCheck[value] = true
+                  else
+                    local setSelectedInstanceExist = Script.isServedAsFunction(value .. '.setSelectedInstance')
+                    if setSelectedInstanceExist then
+                      Script.callFunctionAsync(value.. '.setSelectedInstance', i)
+                      Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
+                      Script.callFunctionAsync(value .. '.sendParameters', true)
+                      persistentData_Model.moduleSaveCheck[value] = true
+                    else
+                      _G.logger:warning(nameOfModule .. ': Set instance does not exist in module ' .. tostring(value))
+                    end
+                  end
+                end
+              end
+            else
+              Script.callFunctionAsync(value .. '.setLoadOnReboot', true)
+              Script.callFunctionAsync(value .. '.sendParameters', true)
+            end
+          end
+        end
+      end
+    end
+  end
+end
+Script.serveFunction('CSK_PersistentData.saveAllModuleConfigs', saveAllModuleConfigs)
+
+local function resetAllModules()
+  Script.notifyEvent("PersistentData_OnResetAllModules")
+end
+Script.serveFunction('CSK_PersistentData.resetAllModules', resetAllModules)
+
+local function removeData()
+  persistentData_Model.removeCurrentData()
+  pageCalled()
+end
+Script.serveFunction('CSK_PersistentData.removeData', removeData)
+
+local function reloadApps()
+  Engine.reloadApps()
+end
+Script.serveFunction('CSK_PersistentData.reloadApps', reloadApps)
+
+local function rebootDevice()
+  local typeName = Engine.getTypeName()
+  if typeName == 'AppStudioEmulator' or typeName == 'SICK AppEngine' then
+    _G.logger:warning(nameOfModule .. ': Function to reboot not supported by device!')
+    Script.notifyEvent('PersistentData_OnNewFeedbackStatus', 'LOG')
+  else
+    _G.logger:info(nameOfModule .. ': Reboot triggered via CSK_PersistentData module.')
+    Engine.reboot('Reboot triggered via CSK_PersistentData module.')
+  end
+end
+Script.serveFunction('CSK_PersistentData.rebootDevice', rebootDevice)
 
 return setPersistentData_Model_Handle
 

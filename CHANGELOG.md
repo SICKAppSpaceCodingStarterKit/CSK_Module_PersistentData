@@ -1,6 +1,25 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 4.1.0
+
+### New features
+- Provide version of module via 'OnNewStatusModuleVersion'
+- Function 'saveAllModuleConfigs' to trigger multiple / all running CSK modules to save their persistent data
+- Function to reload all apps ('reloadApps')
+- Function to reboot device ('rebootDevice')
+- Check if features of module can be used on device and provide this via 'OnNewStatusModuleIsActive' event / 'getStatusModuleActive' function
+- Function 'resetAllModules' and event 'OnResetAllModules' so that other modules can react by loading their default setup
+- Function 'removeData' to remove all data of current DataSet
+- Function 'getCurrentParameterInfo' to get info what parameter file is currently in use
+- Extra thread to trigger other modules to load their specific parameters if event 'OnNewDataToLoad' was notified
+
+### Improvements
+- New parameter for 'loadContent' to controle if other modules directly should react to new parameters
+- New UI design available (selectable via 'setUIStyle')
+- Added UI icon and browser tab information
+- Added some documentation
+
 ## Release 4.0.1
 
 ### Bugfix

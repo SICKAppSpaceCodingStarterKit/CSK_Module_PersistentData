@@ -23,6 +23,8 @@
 {empty} +
 4) This module will notify a "CSK_PersistentData.OnInitialDataLoaded" event, so that other modules can register on that event to load their specific parameters as soon as they are available. +
 {empty} +
+5) Other modules can react on 'CSK_PersistentData.OnResetAllModules' event, to load their default setup. +
+{empty} +
 *How to use:* +
 *Save* +
 1) Via "addParameter" it is possible to send (multiple times) data as a Container to this module and to store it with a specific parameter name. (e.g. "cameraSetup1"). +
@@ -30,10 +32,21 @@
 3) Via "setPath" it can be defined, where to store the full parameter dataset (including all available module parameters). +
 4) Via "saveData" the module will save the parameter dataset within a file defined with "setPath". +
 {empty} +
+INFO: It is also possible to trigger all other CSK modules to send their currenty used parameters by calling "saveAllModuleConfigs". +
+After that, do not forget to save the received data as stated in step 4. +
+{empty} +
  *Load* +
-1) Try to load saved parameter dataset via "loadContent" out of file defined via "setPath". +
+1) Try to load saved parameter dataset via "loadContent" (see documentation) out of file defined via "setPath". +
 1.1) Info: With app/device reboot, the module will try this automatically and will notify the event "OnInitialDataLoaded" if successful. +
-2) Other modules can now load their specific parameter via "getParameter". +</desc>
+2) Other modules can now load their specific parameter via "getParameter". +
+2.1) To trigger all other modules to set the new loaded parameters, call 'saveData' and 'reloadApps'. +
+{empty} +
+*Remove specific parameter* +
+1) Remove a specific parameter within the currently active DataSet via "removeParameter". +
+{empty} +
+*Remove full DataSet* +
+1) Internally clear data of current active DataSet with "removeData". This will not change the parameters within the persistent data file (see next step). +
+2) Make sure to save the new DataSet to the persistent data file via "saveData".</desc>
             <serves>
                 <event name="OnNewDataPath">
                     <desc>Notify path of parameter set.</desc>
@@ -89,12 +102,32 @@
                 <event name="OnNewUserManagementTrigger">
                     <desc>Notify trigger to update UserManagement status.</desc>
                 </event>
+                <event name="OnNewStatusCSKStyle">
+                    <desc>Notify UI style to use for CSK modules.</desc>
+                    <param desc="UI style" multiplicity="1" name="theme" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleVersion">
+                    <desc>Notify version of module.</desc>
+                    <param desc="Version" multiplicity="1" name="version" type="string"/>
+                </event>
+                <event name="OnNewStatusModuleIsActive">
+                    <desc>Notify if module can be used on device.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnResetAllModules">
+                    <desc>Notify event to trigger a reset for all CSK modules.</desc>
+                </event>
+                <event name="OnNewDataToLoad">
+                    <desc>Notify event to trigger other modules to load their related data.</desc>
+                    <param alias="Container" desc="Data container with parameters to load." multiplicity="1" name="data" type="object"/>
+                </event>
                 <function name="saveData">
                     <desc>Save current parameter set.</desc>
                     <return desc="Success of saving parameters." multiplicity="1" name="success" type="bool"/>
                 </function>
                 <function name="loadContent">
                     <desc>Load set of parameters out of path (see "setPath").</desc>
+                    <param desc="Optionally select if other modules should be triggered to load their parameters (as long as their &quot;Load on reboot&quot; flag ist active)." multiplicity="?" name="noModuleUpdate" type="bool"/>
                     <return desc="Success of loading parameter set." multiplicity="1" name="success" type="bool"/>
                 </function>
                 <function name="getParameter">
@@ -160,15 +193,44 @@
                     <desc>Check if upload transfer was succesfull.</desc>
                     <param desc="Status of file transfer" multiplicity="1" name="status" type="bool"/>
                 </function>
+                <function name="saveAllModuleConfigs">
+                    <desc>Function to trigger all CSK modules to save their configuration and additionally activate their "Load config on app start"  flag.</desc>
+                    <param alias="Container" desc="Optional list of modules to save." multiplicity="?" name="moduleList" type="object"/>
+                </function>
+                <function name="setUIStyle">
+                    <desc>Function to set UI style.</desc>
+                    <param desc="Style" multiplicity="1" name="style" type="string"/>
+                </function>
+                <function name="reloadApps">
+                    <desc>Function to reload all apps.</desc>
+                </function>
+                <function name="rebootDevice">
+                    <desc>Function to reboot device.</desc>
+                </function>
+                <function name="getStatusModuleActive">
+                    <desc>Function to get status if module is active.</desc>
+                    <return desc="Status" multiplicity="1" name="status" type="bool"/>
+                </function>
+                <function name="resetAllModules">
+                    <desc>Function to reset all modules (other modules need a function called 'resetModule').</desc>
+                </function>
+                <function name="removeData">
+                    <desc>Remove all data of current DataSet. +
+To make this permanent, it is needed to save the persistent data afterwards (see 'saveData').</desc>
+                </function>
+                <function name="getCurrentParameterInfo">
+                    <desc>Function to get info what parameter file is currently in use.</desc>
+                    <return desc="Name of parameter file." multiplicity="1" name="parameterName" type="string"/>
+                </function>
             </serves>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">4.0.1</meta>
+        <meta key="version">4.1.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
         <meta key="crown2-flow-engine">false</meta>
-        <meta key="LuaLoadAllEngineAPI">false</meta>
+        <meta key="LuaLoadAllEngineAPI">true</meta>
         <entry default="CSK_Module_PersistentData.lua" path="scripts"/>
     </application>
 </manifest>
