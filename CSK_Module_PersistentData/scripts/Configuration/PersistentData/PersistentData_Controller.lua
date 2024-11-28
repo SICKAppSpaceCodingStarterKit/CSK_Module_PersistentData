@@ -393,6 +393,7 @@ local function rebootDevice()
     _G.logger:warning(nameOfModule .. ': Function to reboot not supported by device!')
     Script.notifyEvent('PersistentData_OnNewFeedbackStatus', 'LOG')
   else
+    _G.logger:info(nameOfModule .. ': Reboot triggered via CSK_PersistentData module.')
     Engine.reboot('Reboot triggered via CSK_PersistentData module.')
   end
 end
