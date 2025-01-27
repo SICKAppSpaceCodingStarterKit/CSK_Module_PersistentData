@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 4.2.0
+
+### New features
+- Edit values within parameters via UI
+- Trigger other modules to load specific parameters
+
 ## Release 4.1.0
 
 ### New features

@@ -109,8 +109,9 @@ funcs.createJsonList = createJsonList
 
 --- Function to create a JSON string for dynamic table in UI
 ---@param content string[] Table with data entries
+---@param selectedParam string? Selected row
 ---@return string jsonstring String list
-local function createJsonListForTableView(content)
+local function createJsonListForTableView(content, selectedParam)
   local orderedTable = {}
   local parameterList = {}
 
@@ -120,7 +121,6 @@ local function createJsonListForTableView(content)
     end
     table.sort(orderedTable)
     for _, value in ipairs(orderedTable) do
-
       if type(content[value]) == 'table' then
         local orderedSubTable = {}
         for m in pairs(content[value]) do
@@ -129,17 +129,25 @@ local function createJsonListForTableView(content)
         table.sort(orderedSubTable)
 
         for _, subValue in ipairs(orderedSubTable) do
+          local isSelected = false
+          if value .. ' // ' .. tostring(subValue) == selectedParam then
+            isSelected = true
+          end
           if value == 'passwords' or string.find(value, 'password') or string.find(value, 'Password') then
-            table.insert(parameterList, {ParameterName = value .. ' // ' .. tostring(subValue), Value = '...Password...'})
+            table.insert(parameterList, {ParameterName = value .. ' // ' .. tostring(subValue), Value = '...Password...', selected = isSelected})
           else
-            table.insert(parameterList, {ParameterName = value .. ' // ' .. tostring(subValue), Value = tostring(content[value][subValue])})
+            table.insert(parameterList, {ParameterName = value .. ' // ' .. tostring(subValue), Value = tostring(content[value][subValue]), selected = isSelected})
           end
         end
       else
+        local isSelected = false
+        if value == selectedParam then
+          isSelected = true
+        end
         if value == 'passwords' or string.find(value, 'password') or string.find(value, 'Password') then
-          table.insert(parameterList, {ParameterName = value, Value = '...Password...'})
+          table.insert(parameterList, {ParameterName = value, Value = '...Password...', selected = isSelected})
         else
-          table.insert(parameterList, {ParameterName = value, Value = tostring(content[value])})
+          table.insert(parameterList, {ParameterName = value, Value = tostring(content[value]), selected = isSelected})
         end
       end
     end

@@ -44,13 +44,16 @@
                                             <span>Error</span>
                                         </davinci-callout>
                                     </stacked-pane>
-                                    <stacked-pane id="SP_Reboot" value="LOG">
+                                    <stacked-pane id="SP_Log" value="LOG">
                                         <davinci-callout id="CO_Reboot" type="warning">
                                             <span>Please check log...</span>
                                         </davinci-callout>
                                     </stacked-pane>
+                                    <crown-edpws-binding property="value" name="CSK_PersistentData/OnNewFeedbackStatus"
+                                        update-on-resume>
+                                    </crown-edpws-binding>
                                     <crown-edpws-binding property="value"
-                                        name="CSK_PersistentData/OnNewFeedbackStatus" update-on-resume>
+                                        name="CSK_PersistentData/OnNewThreadFeedbackStatus" update-on-resume>
                                     </crown-edpws-binding>
                                 </stacked-view>
                                 <davinci-tabs id="Tabs_Data_Style_ReBootStart" type="modern">
@@ -185,11 +188,13 @@
                                                                     <layout-column id="ColumnLayout21"
                                                                         style="align-items: center">
                                                                         <davinci-button id="B_RemoveAll"
-                                                                            class="myCustomButton_CSK_Module_PersistentData" type="outline"
-                                                                            icon-position="append" icon="content/delete_sweep"
+                                                                            class="myCustomButton_CSK_Module_PersistentData"
+                                                                            type="outline" icon-position="append"
+                                                                            icon="content/delete_sweep"
                                                                             title="Remove full DataSet. Save Persistent Data afterwards to make this permanent.">
                                                                             <span></span>
-                                                                            <crown-binding event="submit" name="CSK_PersistentData/removeData"
+                                                                            <crown-binding event="submit"
+                                                                                name="CSK_PersistentData/removeData"
                                                                                 auto-commit>
                                                                             </crown-binding>
                                                                         </davinci-button>
@@ -283,6 +288,281 @@
                                                                 </davinci-button>
                                                             </layout-column>
                                                         </layout-row>
+                                                        <davinci-collapse id="Collapse_SendParameters"
+                                                            collapsed-title="Send parameters to module"
+                                                            expanded-title="Hide">
+                                                            <layout-row id="RowLayout25">
+                                                                <layout-column id="ColumnLayout33"
+                                                                    style="align-items: stretch; flex-grow: 5">
+                                                                    <layout-row id="RowLayout31">
+                                                                        <layout-column id="ColumnLayout25"
+                                                                            style="align-items: stretch; flex-grow: 3">
+                                                                            <davinci-drop-down
+                                                                                id="DD_ModuleToSendParameters"
+                                                                                title="Set module (and optionally instance) to send parameters."
+                                                                                label="Module to load parameters">
+                                                                                <crown-edpws-binding property="data"
+                                                                                    name="CSK_PersistentData/OnNewStatusListOfModules"
+                                                                                    update-on-resume
+                                                                                    converter="convertToList">
+                                                                                </crown-edpws-binding>
+                                                                                <crown-edpws-binding property="value"
+                                                                                    name="CSK_PersistentData/OnNewStatusSelectedModuleToSendParameter"
+                                                                                    update-on-resume>
+                                                                                </crown-edpws-binding>
+                                                                                <crown-binding event="change"
+                                                                                    name="CSK_PersistentData/setModuleToSendParameters"
+                                                                                    path="param/args/selection"
+                                                                                    auto-commit>
+                                                                                </crown-binding>
+                                                                            </davinci-drop-down>
+                                                                        </layout-column>
+                                                                        <layout-column id="ColumnLayout38"
+                                                                            style="align-items: stretch">
+                                                                            <davinci-numeric-field
+                                                                                id="NF_InstanceOfModule" type="outline"
+                                                                                min="1" max="100" ticks="1"
+                                                                                group-separator=","
+                                                                                decimal-separator="." format-pattern="0"
+                                                                                title="Set instance of module to load parameters.">
+                                                                                <crown-edpws-binding property="value"
+                                                                                    name="CSK_PersistentData/OnNewStatusSelectedModuleInstanceToSendParameter"
+                                                                                    update-on-resume>
+                                                                                </crown-edpws-binding>
+                                                                                <crown-binding event="change"
+                                                                                    name="CSK_PersistentData/setModuleInstanceToSendParameters"
+                                                                                    path="param/args/selection"
+                                                                                    auto-commit>
+                                                                                </crown-binding>
+                                                                                <crown-edpws-binding property="disabled"
+                                                                                    name="CSK_PersistentData/OnNewStatusSelectionIsMultiModule"
+                                                                                    update-on-resume
+                                                                                    converter="function(value) {return !value;}">
+                                                                                </crown-edpws-binding>
+                                                                            </davinci-numeric-field>
+                                                                        </layout-column>
+                                                                    </layout-row>
+                                                                </layout-column>
+                                                                <layout-column id="ColumnLayout29"
+                                                                    style="align-items: center">
+                                                                    <davinci-button id="Button_SendParameters"
+                                                                        class="myCustomButton_CSK_Module_PersistentData"
+                                                                        type="outline" icon-position="append"
+                                                                        icon="content/send"
+                                                                        title="Trigger selected module (opt. specific instance of it) to load selected parameter.">
+                                                                        <span></span>
+                                                                        <crown-binding event="submit"
+                                                                            name="CSK_PersistentData/sendParameterToModuleViaUI"
+                                                                            auto-commit>
+                                                                        </crown-binding>
+                                                                    </davinci-button>
+                                                                </layout-column>
+                                                            </layout-row>
+                                                        </davinci-collapse>
+                                                        <layout-row id="RowLayout33"
+                                                            class="myCustomPlaceholder10pxHeight_CSK_Module_PersistentData"
+                                                            style="flex-grow: 0; flex-shrink: 0">
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout32"
+                                                            class="myCustomBorderBottom_CSK_Module_PersistentData"
+                                                            style="flex-grow: 0; flex-shrink: 0">
+                                                        </layout-row>
+                                                        <layout-row id="RowLayout34"
+                                                            class="myCustomSpacerVert20_CSK_Module_PersistentData">
+                                                        </layout-row>
+                                                        <stacked-view id="SV_ChangeParameter">
+                                                            <stacked-pane id="SP_String" value="string">
+                                                                <layout-row id="RowLayout26"
+                                                                    style="align-items: center">
+                                                                    <layout-column id="ColumnLayout10"
+                                                                        style="align-items: stretch">
+                                                                        <davinci-value-display id="VD_EditString"
+                                                                            value=""
+                                                                            label="Edit value of selected parameter">
+                                                                        </davinci-value-display>
+                                                                        <layout-row id="RowLayout27">
+                                                                            <layout-column id="ColumnLayout11"
+                                                                                style="align-items: stretch; flex-grow: 5">
+                                                                                <davinci-text-field id="TF_StringValue"
+                                                                                    type="text">
+                                                                                    <crown-edpws-binding
+                                                                                        property="value"
+                                                                                        name="CSK_PersistentData/OnNewStatusStringValueOfSelecteParameter"
+                                                                                        update-on-resume>
+                                                                                    </crown-edpws-binding>
+                                                                                    <crown-binding event="change"
+                                                                                        name="CSK_PersistentData/setNewValueForSelectedParameter"
+                                                                                        path="param/args/value"
+                                                                                        auto-commit>
+                                                                                    </crown-binding>
+                                                                                </davinci-text-field>
+                                                                            </layout-column>
+                                                                            <layout-column id="ColumnLayout28"
+                                                                                style="align-items: center">
+                                                                                <davinci-button
+                                                                                    id="Button_EditStringValue"
+                                                                                    class="myCustomButton_CSK_Module_PersistentData"
+                                                                                    type="outline"
+                                                                                    icon-position="append"
+                                                                                    icon="navigation/check"
+                                                                                    title="Write new value. You need to save the parameters to make this change persistent.">
+                                                                                    <span></span>
+                                                                                    <crown-binding event="submit"
+                                                                                        name="CSK_PersistentData/setNewValueToParameterViaUI"
+                                                                                        auto-commit>
+                                                                                    </crown-binding>
+                                                                                </davinci-button>
+                                                                            </layout-column>
+                                                                        </layout-row>
+                                                                    </layout-column>
+                                                                </layout-row>
+                                                            </stacked-pane>
+                                                            <stacked-pane id="SP_Number" value="number">
+                                                                <layout-row id="RowLayout216"
+                                                                    style="align-items: center">
+                                                                    <layout-column id="ColumnLayout31"
+                                                                        style="align-items: stretch">
+                                                                        <davinci-value-display id="VD_EditNumber"
+                                                                            value=""
+                                                                            label="Edit value of selected parameter">
+                                                                        </davinci-value-display>
+                                                                        <layout-row id="RowLayout29">
+                                                                            <layout-column id="ColumnLayout121"
+                                                                                style="align-items: stretch; flex-grow: 5">
+                                                                                <davinci-numeric-field
+                                                                                    id="NF_NumberValue" type="outline"
+                                                                                    min="-9007199254740991"
+                                                                                    max="9007199254740991" ticks="1"
+                                                                                    group-separator=","
+                                                                                    decimal-separator="."
+                                                                                    format-pattern="0.00">
+                                                                                    <crown-edpws-binding
+                                                                                        property="value"
+                                                                                        name="CSK_PersistentData/OnNewStatusNumberValueOfSelecteParameter"
+                                                                                        update-on-resume>
+                                                                                    </crown-edpws-binding>
+                                                                                    <crown-binding event="change"
+                                                                                        name="CSK_PersistentData/setNewValueForSelectedParameter"
+                                                                                        path="param/args/value"
+                                                                                        auto-commit>
+                                                                                    </crown-binding>
+                                                                                </davinci-numeric-field>
+                                                                            </layout-column>
+                                                                            <layout-column id="ColumnLayout228"
+                                                                                style="align-items: center">
+                                                                                <davinci-button
+                                                                                    id="Button_EditNumberValue"
+                                                                                    class="myCustomButton_CSK_Module_PersistentData"
+                                                                                    type="primary"
+                                                                                    icon-position="append"
+                                                                                    icon="navigation/check"
+                                                                                    title="Write new value. You need to save the parameters to make this change persistent.">
+                                                                                    <span></span>
+                                                                                    <crown-binding event="submit"
+                                                                                        name="CSK_PersistentData/setNewValueToParameterViaUI"
+                                                                                        auto-commit>
+                                                                                    </crown-binding>
+                                                                                </davinci-button>
+                                                                            </layout-column>
+                                                                        </layout-row>
+                                                                    </layout-column>
+                                                                </layout-row>
+                                                            </stacked-pane>
+                                                            <stacked-pane id="SP_BOOL" value="boolean">
+                                                                <layout-row id="RowLayout262"
+                                                                    style="align-items: center">
+                                                                    <layout-column id="ColumnLayout32"
+                                                                        style="align-items: stretch">
+                                                                        <davinci-value-display id="VD_EditBool" value=""
+                                                                            label="Edit value of selected parameter">
+                                                                        </davinci-value-display>
+                                                                        <layout-row id="RowLayout30"
+                                                                            style="align-items: stretch">
+                                                                            <layout-column id="ColumnLayout1132"
+                                                                                style="align-items: stretch; flex-grow: 5; justify-content: center">
+                                                                                <davinci-toggle-switch
+                                                                                    id="TS_BoolValue">
+                                                                                    <crown-edpws-binding
+                                                                                        property="checked"
+                                                                                        name="CSK_PersistentData/OnNewStatusBooleanValueOfSelecteParameter"
+                                                                                        update-on-resume>
+                                                                                    </crown-edpws-binding>
+                                                                                    <crown-binding event="change"
+                                                                                        name="CSK_PersistentData/setNewValueForSelectedParameter"
+                                                                                        path="param/args/value"
+                                                                                        auto-commit>
+                                                                                    </crown-binding>
+                                                                                </davinci-toggle-switch>
+                                                                            </layout-column>
+                                                                            <layout-column id="ColumnLayout248"
+                                                                                style="align-items: center">
+                                                                                <davinci-button
+                                                                                    id="Button_EditBooleanValue"
+                                                                                    class="myCustomButton_CSK_Module_PersistentData"
+                                                                                    type="primary"
+                                                                                    icon-position="append"
+                                                                                    icon="navigation/check"
+                                                                                    title="Write new value. You need to save the parameters to make this change persistent.">
+                                                                                    <span></span>
+                                                                                    <crown-binding event="submit"
+                                                                                        name="CSK_PersistentData/setNewValueToParameterViaUI"
+                                                                                        auto-commit>
+                                                                                    </crown-binding>
+                                                                                </davinci-button>
+                                                                            </layout-column>
+                                                                        </layout-row>
+                                                                    </layout-column>
+                                                                </layout-row>
+                                                            </stacked-pane>
+                                                            <stacked-pane id="SP_NoParameterType" value="empty">
+                                                            </stacked-pane>
+                                                            <crown-edpws-binding property="value"
+                                                                name="CSK_PersistentData/OnNewStatusParameterTypeSelected"
+                                                                update-on-resume>
+                                                            </crown-edpws-binding>
+                                                        </stacked-view>
+                                                        <stacked-view id="SV_ParameterIsTable">
+                                                            <stacked-pane id="SP_ParameterIsTable" value="true">
+                                                                <layout-row id="RowLayout28">
+                                                                    <layout-column id="ColumnLayout26"
+                                                                        style="align-items: stretch; flex-grow: 5">
+                                                                        <davinci-drop-down id="DD_ListOfParameters"
+                                                                            label="Selected parameter within selected table"
+                                                                            title="Parameter consitis of table data. Here you can select the specific value to edit.">
+                                                                            <crown-edpws-binding property="data"
+                                                                                name="CSK_PersistentData/OnNewStatusListOfTableParameters"
+                                                                                update-on-resume
+                                                                                converter="convertToList">
+                                                                            </crown-edpws-binding>
+                                                                            <crown-edpws-binding property="value"
+                                                                                name="CSK_PersistentData/OnNewStatusSelectedParameterWithinTable"
+                                                                                update-on-resume>
+                                                                            </crown-edpws-binding>
+                                                                            <crown-binding event="change"
+                                                                                name="CSK_PersistentData/setParameterSelectionWithinTable"
+                                                                                path="param/args/selection" auto-commit>
+                                                                            </crown-binding>
+                                                                        </davinci-drop-down>
+                                                                        <layout-row id="RowLayout35"
+                                                                            class="myCustomSpacerVert10_CSK_Module_PersistentData">
+                                                                        </layout-row>
+                                                                    </layout-column>
+                                                                    <layout-column id="ColumnLayout27"
+                                                                        style="align-items: stretch">
+                                                                    </layout-column>
+                                                                </layout-row>
+                                                            </stacked-pane>
+                                                            <stacked-pane id="SP_ParameterIsNotTable" value="false">
+                                                            </stacked-pane>
+                                                            <crown-edpws-binding property="value"
+                                                                name="CSK_PersistentData/OnNewStatusSelectedParameterIsTable"
+                                                                update-on-resume
+                                                                converter="function(value) {return value.toString();}">
+                                                            </crown-edpws-binding>
+                                                        </stacked-view>
+                                                        <davinci-value-display id="VD_ParameterValues"
+                                                            label="List of parameters">
+                                                        </davinci-value-display>
                                                         <curie-table id="DT_ParameterContent" selectable
                                                             select-mode="highlight_row">
                                                             <curie-table-column id="ParameterName"
@@ -294,6 +574,10 @@
                                                                 name="CSK_PersistentData/OnNewParameterTableInfo"
                                                                 update-on-resume>
                                                             </crown-edpws-binding>
+                                                            <crown-binding event="row-selected"
+                                                                name="CSK_PersistentData/setSelectedParameterWithinTableViaUI"
+                                                                path="param/args/selection" auto-commit>
+                                                            </crown-binding>
                                                         </curie-table>
                                                     </layout-column>
                                                 </layout-row>

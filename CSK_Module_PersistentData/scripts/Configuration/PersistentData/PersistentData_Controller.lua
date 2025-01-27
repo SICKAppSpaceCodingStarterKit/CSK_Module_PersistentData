@@ -23,8 +23,6 @@ local tmrCheckAllModules = Timer.create()
 tmrCheckAllModules:setExpirationTime(10000)
 tmrCheckAllModules:setPeriodic(false)
 
-local currentSelectedParameters = '' -- Selected Parameter
-
 -- ************************ UI Events Start ********************************
 Script.serveEvent('CSK_PersistentData.OnNewStatusModuleVersion', 'PersistentData_OnNewStatusModuleVersion')
 Script.serveEvent('CSK_PersistentData.OnNewStatusCSKStyle', 'PersistentData_OnNewStatusCSKStyle')
@@ -38,6 +36,22 @@ Script.serveEvent("CSK_PersistentData.OnNewParameterSelection", "PersistentData_
 
 Script.serveEvent("CSK_PersistentData.OnNewParameterTableInfo", "PersistentData_OnNewParameterTableInfo")
 Script.serveEvent('CSK_PersistentData.OnNewStatusTempFileAvailable', 'PersistentData_OnNewStatusTempFileAvailable')
+
+Script.serveEvent('CSK_PersistentData.OnNewStatusParameterTypeSelected', 'PersistentData_OnNewStatusParameterTypeSelected')
+Script.serveEvent('CSK_PersistentData.OnNewStatusStringValueOfSelecteParameter', 'PersistentData_OnNewStatusStringValueOfSelecteParameter')
+Script.serveEvent('CSK_PersistentData.OnNewStatusNumberValueOfSelecteParameter', 'PersistentData_OnNewStatusNumberValueOfSelecteParameter')
+Script.serveEvent('CSK_PersistentData.OnNewStatusBooleanValueOfSelecteParameter', 'PersistentData_OnNewStatusBooleanValueOfSelecteParameter')
+
+Script.serveEvent('CSK_PersistentData.OnNewStatusSelectedParameterIsTable', 'PersistentData_OnNewStatusSelectedParameterIsTable')
+Script.serveEvent('CSK_PersistentData.OnNewStatusListOfTableParameters', 'PersistentData_OnNewStatusListOfTableParameters')
+Script.serveEvent('CSK_PersistentData.OnNewStatusSelectedParameterWithinTable', 'PersistentData_OnNewStatusSelectedParameterWithinTable')
+
+Script.serveEvent('CSK_PersistentData.OnNewStatusListOfModules', 'PersistentData_OnNewStatusListOfModules')
+Script.serveEvent('CSK_PersistentData.OnNewStatusSelectedModuleToSendParameter', 'PersistentData_OnNewStatusSelectedModuleToSendParameter')
+Script.serveEvent('CSK_PersistentData.OnNewStatusSelectionIsMultiModule', 'PersistentData_OnNewStatusSelectionIsMultiModule')
+Script.serveEvent('CSK_PersistentData.OnNewStatusSelectedModuleInstanceToSendParameter', 'PersistentData_OnNewStatusSelectedModuleInstanceToSendParameter')
+
+Script.serveEvent('CSK_PersistentData.OnNewStatusSendParametersToModule', 'PersistentData_OnNewStatusSendParametersToModule')
 
 Script.serveEvent("CSK_PersistentData.OnUserLevelOperatorActive", "PersistentData_OnUserLevelOperatorActive")
 Script.serveEvent("CSK_PersistentData.OnUserLevelMaintenanceActive", "PersistentData_OnUserLevelMaintenanceActive")
@@ -125,10 +139,27 @@ local function handleOnExpiredTmrPersistendData()
   Script.notifyEvent('PersistentData_OnNewContent', persistentData_Model.contentList)
   Script.notifyEvent('PersistentData_OnNewFeedbackStatus', 'EMPTY')
   Script.notifyEvent('PersistentData_OnNewDatasetList', persistentData_Model.funcs.createJsonList(persistentData_Model.data))
-  if currentSelectedParameters ~= '' then
-    Script.notifyEvent('PersistentData_OnNewParameterSelection', currentSelectedParameters)
+  if persistentData_Model.currentlySelectedDataSet ~= '' then
+    Script.notifyEvent('PersistentData_OnNewParameterSelection', persistentData_Model.currentlySelectedDataSet)
   end
-  Script.notifyEvent('PersistentData_OnNewParameterTableInfo', persistentData_Model.funcs.createJsonListForTableView(persistentData_Model.data[currentSelectedParameters]))
+
+  persistentData_Model.currentlySelectedParameterName = ''
+  persistentData_Model.currentlySelectedParameterType = ''
+  persistentData_Model.currentlySelectedParameterNameTableList = ''
+  persistentData_Model.currentlySelectedParameterValue = ''
+
+  persistentData_Model.currentlySelectedModuleToLoadParameters = ''
+  persistentData_Model.currentlySelectedModuleInstanceToLoadParameters = 0
+
+  Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterIsTable', false)
+  Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+
+  Script.notifyEvent('PersistentData_OnNewStatusListOfModules', persistentData_Model.funcs.createStringListBySimpleTable(persistentData_Model.listOfCSKModules))
+  Script.notifyEvent('PersistentData_OnNewStatusSelectedModuleToSendParameter', '')
+  Script.notifyEvent('PersistentData_OnNewStatusSelectionIsMultiModule', false)
+  Script.notifyEvent('PersistentData_OnNewStatusSelectedModuleInstanceToSendParameter', 0)
+
+  Script.notifyEvent('PersistentData_OnNewParameterTableInfo', persistentData_Model.funcs.createJsonListForTableView(persistentData_Model.data[persistentData_Model.currentlySelectedDataSet]))
   Script.notifyEvent('PersistentData_OnNewStatusTempFileAvailable', File.exists(persistentData_Model.tempPath))
 end
 Timer.register(tmrPersistendData, "OnExpired", handleOnExpiredTmrPersistendData)
@@ -281,19 +312,354 @@ Script.serveFunction("CSK_PersistentData.getModuleParameterName", getModuleParam
 local function setSelectedParameterName(selection)
   if persistentData_Model.data[selection] then
     _G.logger:fine(nameOfModule .. ': Selected parameter: ' .. tostring(selection))
-    currentSelectedParameters = selection
+    persistentData_Model.currentlySelectedDataSet = selection
   else
     _G.logger:info(nameOfModule .. ': Parameter not available: ' .. tostring(selection))
   end
-  Script.notifyEvent('PersistentData_OnNewParameterTableInfo', persistentData_Model.funcs.createJsonListForTableView(persistentData_Model.data[currentSelectedParameters]))
+  Script.notifyEvent('PersistentData_OnNewParameterTableInfo', persistentData_Model.funcs.createJsonListForTableView(persistentData_Model.data[persistentData_Model.currentlySelectedDataSet]))
+
+  persistentData_Model.currentlySelectedParameterName = ''
+  persistentData_Model.currentlySelectedParameterType = ''
+  persistentData_Model.currentlySelectedParameterNameTableList = ''
+  persistentData_Model.currentlySelectedParameterValue = ''
+
+  Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterIsTable', false)
+  Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
 end
 Script.serveFunction("CSK_PersistentData.setSelectedParameterName", setSelectedParameterName)
 
+--- Function to check if selection in UIs DynamicTable can find related pattern
+---@param selection string Full text of selection
+---@param pattern string Pattern to search for
+---@param findEnd bool Find end after pattern
+---@return string? Success if pattern was found or even postfix after pattern till next quotation marks if findEnd was set to TRUE
+local function checkSelection(selection, pattern, findEnd)
+  if selection ~= "" then
+    local _, pos = string.find(selection, pattern)
+    if pos == nil then
+      return nil
+    else
+      if findEnd then
+        pos = tonumber(pos)
+        local endPos = string.find(selection, '"', pos+1)
+        if endPos then
+          local tempSelection = string.sub(selection, pos+1, endPos-1)
+          if tempSelection ~= nil and tempSelection ~= '-' then
+            return tempSelection
+          end
+        else
+          return nil
+        end
+      else
+        return 'true'
+      end
+    end
+  end
+  return nil
+end
+
+local function setSelectedParameterWithinTableViaUI(selection)
+  local tempSelection = checkSelection(selection, '"ParameterName":"', true)
+  if tempSelection then
+    local isSelected = checkSelection(selection, '"selected":true', false)
+    if isSelected then
+      persistentData_Model.currentlySelectedParameterName = tempSelection
+      local isTable = string.find(tempSelection, ' // ')
+      if isTable then
+        -- Mainly a table 
+        local mainTable = string.sub(tempSelection, 1, isTable-1)
+        local subTable = string.sub(tempSelection, isTable + 4, #tempSelection)
+
+        local mainValue = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][mainTable][subTable]
+        local typeOfMainValue = type(mainValue)
+
+        if typeOfMainValue == 'string' or typeOfMainValue == 'number' or typeOfMainValue == 'boolean' then
+          Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterIsTable', false)
+          persistentData_Model.currentlySelectedParameterType = typeOfMainValue
+          persistentData_Model.currentlySelectedParameterNameOfTable = mainTable
+          persistentData_Model.currentlySelectedParameterNameOfSubTable = subTable
+          persistentData_Model.currentlySelectedParameterWithinSubTable = ''
+          Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', typeOfMainValue)
+          if mainValue ~= nil then
+            persistentData_Model.currentlySelectedParameterValue = mainValue
+          end
+          if typeOfMainValue == 'string' then
+            if string.find(subTable, 'passwords') or string.find(subTable, 'password') or string.find(subTable, 'Password') or string.find(mainTable, 'passwords') or string.find(mainTable, 'password') or string.find(mainTable, 'Password') then
+              Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+            else
+              Script.notifyEvent('PersistentData_OnNewStatusStringValueOfSelecteParameter', mainValue)
+            end
+          elseif typeOfMainValue == 'number' then
+            Script.notifyEvent('PersistentData_OnNewStatusNumberValueOfSelecteParameter', mainValue)
+          elseif typeOfMainValue == 'boolean' then
+            Script.notifyEvent('PersistentData_OnNewStatusBooleanValueOfSelecteParameter', mainValue)
+          end
+
+        elseif typeOfMainValue == 'table' then
+          -- Parameter consists of internal table
+          Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterIsTable', true)
+
+          -- List of parameters
+          Script.notifyEvent('PersistentData_OnNewStatusListOfTableParameters', persistentData_Model.funcs.createJsonList(persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][mainTable][subTable]))
+          Script.sleep(200)
+
+          local tempKey = ''
+          -- Get first table entry
+          for paramKey, _ in pairs(persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][mainTable][subTable]) do
+            tempKey = paramKey
+            break
+          end
+          persistentData_Model.currentlySelectedParameterWithinSubTable = tempKey
+          Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterWithinTable', tempKey)
+          local value = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][mainTable][subTable][tempKey]
+          local valueType = type(value)
+
+          if valueType == 'string' or valueType == 'number' or valueType == 'boolean' then
+            persistentData_Model.currentlySelectedParameterType = valueType
+            persistentData_Model.currentlySelectedParameterNameOfTable = mainTable
+            persistentData_Model.currentlySelectedParameterNameOfSubTable = subTable
+            Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', valueType)
+            persistentData_Model.currentlySelectedParameterValue = value
+            if valueType == 'string' then
+              if string.find(subTable, 'passwords') or string.find(subTable, 'password') or string.find(subTable, 'Password') or string.find(mainTable, 'passwords') or string.find(mainTable, 'password') or string.find(mainTable, 'Password') or string.find(tempKey, 'passwords') or string.find(tempKey, 'password') or string.find(tempKey, 'Password') then
+                Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+              else
+                Script.notifyEvent('PersistentData_OnNewStatusStringValueOfSelecteParameter', value)
+              end
+            elseif valueType == 'number' then
+              Script.notifyEvent('PersistentData_OnNewStatusNumberValueOfSelecteParameter', value)
+            elseif valueType == 'boolean' then
+              Script.notifyEvent('PersistentData_OnNewStatusBooleanValueOfSelecteParameter', value)
+            end
+          else
+            Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+            persistentData_Model.currentlySelectedParameterType = ''
+            persistentData_Model.currentlySelectedParameterNameOfTable = ''
+            persistentData_Model.currentlySelectedParameterNameOfSubTable = ''
+            persistentData_Model.currentlySelectedParameterWithinSubTable = ''
+            persistentData_Model.currentlySelectedParameterValue = ''
+          end
+
+        else
+          -- Not supported to change other data types
+          Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+          persistentData_Model.currentlySelectedParameterType = ''
+          persistentData_Model.currentlySelectedParameterNameOfTable = ''
+          persistentData_Model.currentlySelectedParameterNameOfSubTable = ''
+          persistentData_Model.currentlySelectedParameterWithinSubTable = ''
+          persistentData_Model.currentlySelectedParameterValue = ''
+        end
+
+      else
+        -- Not table content
+        Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterIsTable', false)
+        local value = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][tempSelection]
+        local valueType = type(value)
+
+        if valueType == 'string' or valueType == 'number' or valueType == 'boolean' then
+          persistentData_Model.currentlySelectedParameterType = valueType
+          Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', valueType)
+          persistentData_Model.currentlySelectedParameterValue = value
+          if valueType == 'string' then
+            if string.find(tempSelection, 'passwords') or string.find(tempSelection, 'password') or string.find(tempSelection, 'Password') then
+              Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+            else
+              Script.notifyEvent('PersistentData_OnNewStatusStringValueOfSelecteParameter', value)
+            end
+          elseif valueType == 'number' then
+            Script.notifyEvent('PersistentData_OnNewStatusNumberValueOfSelecteParameter', value)
+          elseif valueType == 'boolean' then
+            Script.notifyEvent('PersistentData_OnNewStatusBooleanValueOfSelecteParameter', value)
+          end
+          persistentData_Model.currentlySelectedParameterNameOfTable = ''
+          persistentData_Model.currentlySelectedParameterNameOfSubTable = ''
+          persistentData_Model.currentlySelectedParameterWithinSubTable = ''
+        else
+          -- Not supported to change other data types
+          Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+          persistentData_Model.currentlySelectedParameterType = ''
+          persistentData_Model.currentlySelectedParameterNameOfTable = ''
+          persistentData_Model.currentlySelectedParameterNameOfSubTable = ''
+          persistentData_Model.currentlySelectedParameterWithinSubTable = ''
+
+          persistentData_Model.currentlySelectedParameterValue = ''
+        end
+      end
+    else
+      -- Deselected
+      persistentData_Model.currentlySelectedParameterName = ''
+      persistentData_Model.currentlySelectedParameterNameOfTable = ''
+      persistentData_Model.currentlySelectedParameterNameOfSubTable = ''
+      persistentData_Model.currentlySelectedParameterWithinSubTable = ''
+      persistentData_Model.currentlySelectedParameterValue = ''
+      Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+      Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterIsTable', false)
+    end
+  else
+    -- No selection
+    persistentData_Model.currentlySelectedParameterName = ''
+    persistentData_Model.currentlySelectedParameterNameOfTable = ''
+    persistentData_Model.currentlySelectedParameterNameOfSubTable = ''
+    persistentData_Model.currentlySelectedParameterWithinSubTable = ''
+    persistentData_Model.currentlySelectedParameterValue = ''
+    Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+    Script.notifyEvent('PersistentData_OnNewStatusSelectedParameterIsTable', false)
+  end
+  Script.notifyEvent('PersistentData_OnNewParameterTableInfo', persistentData_Model.funcs.createJsonListForTableView(persistentData_Model.data[persistentData_Model.currentlySelectedDataSet], persistentData_Model.currentlySelectedParameterName))
+end
+Script.serveFunction('CSK_PersistentData.setSelectedParameterWithinTableViaUI', setSelectedParameterWithinTableViaUI)
+
+local function setParameterSelectionWithinTable(selection)
+  local checkValue
+  if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable] then
+    if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable] then
+      checkValue = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable][selection]
+    end
+  end
+  if checkValue ~= nil then
+    persistentData_Model.currentlySelectedParameterValue = value
+    persistentData_Model.currentlySelectedParameterWithinSubTable = selection
+
+    local typeOfMainValue = type(checkValue)
+
+    if typeOfMainValue == 'string' or typeOfMainValue == 'number' or typeOfMainValue == 'boolean' then
+      Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', typeOfMainValue)
+      persistentData_Model.currentlySelectedParameterType = typeOfMainValue
+
+      if persistentData_Model.currentlySelectedParameterType == 'string' then
+        if string.find(selection, 'passwords') or string.find(selection, 'password') or string.find(selection, 'Password') then
+          Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+        else
+          Script.notifyEvent('PersistentData_OnNewStatusStringValueOfSelecteParameter', checkValue)
+        end
+      elseif persistentData_Model.currentlySelectedParameterType == 'number' then
+        Script.notifyEvent('PersistentData_OnNewStatusNumberValueOfSelecteParameter', checkValue)
+      elseif persistentData_Model.currentlySelectedParameterType == 'boolean' then
+        Script.notifyEvent('PersistentData_OnNewStatusBooleanValueOfSelecteParameter', checkValue)
+      end
+    else
+      -- Not supported to change other data types
+      Script.notifyEvent('PersistentData_OnNewStatusParameterTypeSelected', 'empty')
+      persistentData_Model.currentlySelectedParameterValue = ''
+      persistentData_Model.currentlySelectedParameterType = ''
+    end
+  else
+    persistentData_Model.currentlySelectedParameterValue = ''
+    persistentData_Model.currentlySelectedParameterType = ''
+  end
+end
+Script.serveFunction('CSK_PersistentData.setParameterSelectionWithinTable', setParameterSelectionWithinTable)
+
+local function setNewValueForSelectedParameter(value)
+  persistentData_Model.currentlySelectedParameterValue = value
+end
+Script.serveFunction('CSK_PersistentData.setNewValueForSelectedParameter', setNewValueForSelectedParameter)
+
+local function setNewValueToParameterViaUI()
+  -- Set new value
+  if persistentData_Model.currentlySelectedParameterValue ~= '' and persistentData_Model.currentlySelectedParameterValue ~= nil then
+    if persistentData_Model.currentlySelectedParameterNameOfTable ~= '' then
+      if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable] then
+        if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable] then
+          if persistentData_Model.currentlySelectedParameterWithinSubTable ~= '' then
+            local checkValue = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable][persistentData_Model.currentlySelectedParameterWithinSubTable]
+            if checkValue ~= nil then
+              local checkType = type(checkValue)
+              local newType = type(persistentData_Model.currentlySelectedParameterValue)
+              if checkType == newType then
+                _G.logger:fine(nameOfModule .. ': Updated parameter "' .. tostring(persistentData_Model.currentlySelectedParameterWithinSubTable) .. '" with new value = ' .. tostring(persistentData_Model.currentlySelectedParameterValue))
+                persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable][persistentData_Model.currentlySelectedParameterWithinSubTable] = persistentData_Model.currentlySelectedParameterValue
+              else
+                _G.logger:info(nameOfModule .. ": No value update. New value not of same type.")
+              end
+            else
+              _G.logger:info(nameOfModule .. ": No value update. Internal value does not exist.")
+            end
+          else
+            -- No extra internal table
+            local checkValue = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable]
+            if checkValue ~= nil then
+              local checkType = type(checkValue)
+              local newType = type(persistentData_Model.currentlySelectedParameterValue)
+              if checkType == newType then
+                _G.logger:fine(nameOfModule .. ': Updated parameter "' .. tostring(persistentData_Model.currentlySelectedParameterNameOfSubTable) .. '" with new value = ' .. tostring(persistentData_Model.currentlySelectedParameterValue))
+                persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable] = persistentData_Model.currentlySelectedParameterValue
+              else
+                _G.logger:info(nameOfModule .. ": No value update. New value not of same type.")
+              end
+            else
+              _G.logger:info(nameOfModule .. ": No value update. Internal value does not exist.")
+            end
+          end
+        else
+          _G.logger:info(nameOfModule .. ": No value update. Internal value does not exist.")
+        end
+      else
+        _G.logger:info(nameOfModule .. ": No value update. Internal value does not exist.")
+      end
+
+    else
+      -- No table content
+      local checkValue = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterName]
+      local checkType = type(checkValue)
+      local newType = type(persistentData_Model.currentlySelectedParameterValue)
+
+      if checkType == newType then
+        _G.logger:fine(nameOfModule .. ': Updated parameter "' .. tostring(persistentData_Model.currentlySelectedParameterName) .. '" with new value = ' .. tostring(persistentData_Model.currentlySelectedParameterValue))
+        persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterName] = persistentData_Model.currentlySelectedParameterValue
+      else
+        _G.logger:info(nameOfModule .. ": No value update. New value not of same type.")
+      end
+    end
+  else
+    _G.logger:info(nameOfModule .. ": No value available.")
+  end
+  Script.notifyEvent('PersistentData_OnNewParameterTableInfo', persistentData_Model.funcs.createJsonListForTableView(persistentData_Model.data[persistentData_Model.currentlySelectedDataSet], persistentData_Model.currentlySelectedParameterName))
+
+end
+Script.serveFunction('CSK_PersistentData.setNewValueToParameterViaUI', setNewValueToParameterViaUI)
+
+local function setModuleToSendParameters(selection)
+  _G.logger:fine(nameOfModule .. ': Select module ' .. tostring(selection) .. ' to send parameters.')
+  persistentData_Model.currentlySelectedModuleToLoadParameters = selection
+  local checkIfMulti = string.find(selection, 'Multi')
+  if checkIfMulti then
+    Script.notifyEvent('PersistentData_OnNewStatusSelectionIsMultiModule', true)
+    persistentData_Model.currentlySelectedModuleInstanceToLoadParameters = 1
+    Script.notifyEvent('PersistentData_OnNewStatusSelectedModuleInstanceToSendParameter', 1)
+  else
+    Script.notifyEvent('PersistentData_OnNewStatusSelectionIsMultiModule', false)
+    persistentData_Model.currentlySelectedModuleInstanceToLoadParameters = 0
+    Script.notifyEvent('PersistentData_OnNewStatusSelectedModuleInstanceToSendParameter', 0)
+  end
+end
+Script.serveFunction('CSK_PersistentData.setModuleToSendParameters', setModuleToSendParameters)
+
+local function setModuleInstanceToSendParameters(instance)
+  _G.logger:fine(nameOfModule .. ': Select instance ' .. tostring(instance) .. ' to send parameters.')
+  persistentData_Model.currentlySelectedModuleInstanceToLoadParameters = selection
+end
+Script.serveFunction('CSK_PersistentData.setModuleInstanceToSendParameters', setModuleInstanceToSendParameters)
+
+local function sendParameterToModuleViaUI()
+  local checkIfMulti = string.find(persistentData_Model.currentlySelectedModuleToLoadParameters, 'Multi')
+  if checkIfMulti and persistentData_Model.currentlySelectedModuleInstanceToLoadParameters ~= 0 then
+    Script.notifyEvent('PersistentData_OnNewStatusSendParametersToModule', persistentData_Model.currentlySelectedModuleToLoadParameters, persistentData_Model.currentlySelectedDataSet, persistentData_Model.currentlySelectedModuleInstanceToLoadParameters)
+  else
+    Script.notifyEvent('PersistentData_OnNewStatusSendParametersToModule', persistentData_Model.currentlySelectedModuleToLoadParameters, persistentData_Model.currentlySelectedDataSet)
+  end
+end
+Script.serveFunction('CSK_PersistentData.sendParameterToModuleViaUI', sendParameterToModuleViaUI)
+
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+
 local function removeParameterViaUI()
-  if currentSelectedParameters ~= '' then
-    _G.logger:fine(nameOfModule .. ': Remove parameter: ' .. tostring(currentSelectedParameters))
-    persistentData_Model.removeParameter(currentSelectedParameters)
-    currentSelectedParameters = ''
+  if persistentData_Model.currentlySelectedDataSet ~= '' then
+    _G.logger:fine(nameOfModule .. ': Remove parameter: ' .. tostring(persistentData_Model.currentlySelectedDataSet))
+    persistentData_Model.removeParameter(persistentData_Model.currentlySelectedDataSet)
+    persistentData_Model.currentlySelectedDataSet = ''
     tmrPersistendData:start()
   else
     _G.logger:info(nameOfModule .. ': Parameter to remove not available.')

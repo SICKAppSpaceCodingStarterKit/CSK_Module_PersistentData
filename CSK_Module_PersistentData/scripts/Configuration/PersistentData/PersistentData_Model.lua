@@ -28,6 +28,29 @@ persistentData_Model.initialLoading = false -- status to check if parameter data
 persistentData_Model.version = Engine.getCurrentAppVersion() -- Version of module
 
 persistentData_Model.moduleSaveCheck = {} -- Check if modules successfully send their parameters if they all were triggered to save
+persistentData_Model.currentlySelectedDataSet = '' -- Selected DataSet of parameters
+persistentData_Model.currentlySelectedParameterName = '' -- Name of selected parameter within parameter set via UI
+persistentData_Model.currentlySelectedParameterNameOfTable = '' -- Name of selected table within parameter
+persistentData_Model.currentlySelectedParameterNameOfSubTable = '' -- Name of selected subtable within parameter
+persistentData_Model.currentlySelectedParameterWithinSubTable = '' -- Name of selected parameter within subtable
+persistentData_Model.currentlySelectedParameterType = '' -- Data type of selected parameter within UI
+persistentData_Model.currentlySelectedParameterNameTableList = '' -- Optional list of parameter names within selected parameter table
+persistentData_Model.currentlySelectedParameterValue = '' -- Value of selected parameter within UI
+
+persistentData_Model.listOfCSKModules = {} -- List of available CSK modules
+persistentData_Model.currentlySelectedModuleToLoadParameters = '' -- Selected module to trigger to load currently selected parameter
+
+for _, value in pairs(Engine.listApps()) do
+  local checkCSK = string.find(value, 'CSK_')
+  if checkCSK then
+    table.insert(persistentData_Model.listOfCSKModules, value)
+  end
+end
+
+if #persistentData_Model.listOfCSKModules >= 1 then
+  persistentData_Model.currentlySelectedModuleToLoadParameters = persistentData_Model.listOfCSKModules[1]
+end
+persistentData_Model.currentlySelectedModuleInstanceToLoadParameters = 0 -- Optional instance of module to load parameters
 
 -- Handle processing to trigger other modules to load their specific parameters
 Script.startScript('CSK_Module_PersistentData_AsyncLoadData') -- Additional thread needed, as otherwise the module will block itself
@@ -38,8 +61,7 @@ persistentData_Model.parameters.parameterNames = {} -- store table of what param
 persistentData_Model.parameters.loadOnReboot = {} -- store table if parameter should be loaded for module on app/device reboot
 persistentData_Model.parameters.totalInstances = {} -- store table of total instances to create for this module
 
--- INFO: following functions can also be used like this in other modules
-persistentData_Model.funcs = require('Configuration/PersistentData/helper/funcs')
+persistentData_Model.funcs = require('Configuration/PersistentData/helper/funcs') -- Helper functions
 
 --**************************************************************************
 --********************** End Global Scope **********************************
