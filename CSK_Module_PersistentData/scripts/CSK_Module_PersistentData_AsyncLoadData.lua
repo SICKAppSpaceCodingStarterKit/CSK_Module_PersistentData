@@ -105,7 +105,8 @@ Script.register('CSK_PersistentData.OnNewDataToLoad', handleOnNewDataToLoad)
 ---@param instance? int Optional number of instance of module.
 local function handleOnNewStatusSendParametersToModule(moduleName, parameterName, instance)
 
-  local name = string.gsub(moduleName, '_Module_', '_')
+  local name = string.gsub(moduleName, '_1stModule_', '_')
+  name = string.gsub(name, '_Module_', '_')
   name = string.gsub(name, '_Application_', '_')
 
   _G.logger:fine(nameOfModule .. ": Try to set parameters " .. tostring(parameterName) .. " to module " .. tostring(name) .. " (optional instance = " .. tostring(instance) .. ").")
