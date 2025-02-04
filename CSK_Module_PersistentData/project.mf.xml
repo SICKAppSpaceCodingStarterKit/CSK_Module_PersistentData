@@ -121,6 +121,60 @@ After that, do not forget to save the received data as stated in step 4. +
                     <desc>Notify event to trigger other modules to load their related data.</desc>
                     <param alias="Container" desc="Data container with parameters to load." multiplicity="1" name="data" type="object"/>
                 </event>
+                <event name="OnNewStatusParameterTypeSelected">
+                    <desc>Notify what parameter type was selected within a parameter set.</desc>
+                    <param desc="Type of parameter." multiplicity="1" name="parameterType" type="string"/>
+                </event>
+                <event name="OnNewStatusSelectedParameterIsTable">
+                    <desc>Notfiy if currently selected parameter holds table data.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewStatusSelectedParameterWithinTable">
+                    <desc>Notify name of selected parameter within parameter table.</desc>
+                    <param desc="Name" multiplicity="1" name="name" type="string"/>
+                </event>
+                <event name="OnNewStatusListOfTableParameters">
+                    <desc>Notify list of parameter names within parameter table.</desc>
+                    <param desc="List of parameter names." multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewStatusStringValueOfSelecteParameter">
+                    <desc>Notify string value of currently selected parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="string"/>
+                </event>
+                <event name="OnNewStatusNumberValueOfSelecteParameter">
+                    <desc>Notify number value of currently selected parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="float"/>
+                </event>
+                <event name="OnNewStatusBooleanValueOfSelecteParameter">
+                    <desc>Notify string value of currently selected parameter.</desc>
+                    <param desc="Value" multiplicity="1" name="value" type="bool"/>
+                </event>
+                <event name="OnNewStatusListOfModules">
+                    <desc>Notify list of available CSK modules.</desc>
+                    <param desc="List of CSK modules." multiplicity="1" name="list" type="string"/>
+                </event>
+                <event name="OnNewStatusSelectedModuleToSendParameter">
+                    <desc>Notify preselected module to send currently selected parameter.</desc>
+                    <param desc="Module" multiplicity="1" name="module" type="string"/>
+                </event>
+                <event name="OnNewStatusSendParametersToModule">
+                    <desc>Notify event to trigger a module to load specific parameters.</desc>
+                    <param desc="Name of module." multiplicity="1" name="moduleName" type="string"/>
+                    <param desc="Name of parameters to load." multiplicity="1" name="parameterName" type="string"/>
+                    <param desc="Optional number of instance of module." multiplicity="?" name="instance" type="int"/>
+                </event>
+                <event name="OnNewStatusSelectedModuleInstanceToSendParameter">
+                    <desc>Notify instance of preselected module to send currently selected parameter.</desc>
+                    <param desc="Instance identifier." multiplicity="1" name="instance" type="int"/>
+                </event>
+                <event name="OnNewStatusSelectionIsMultiModule">
+                    <desc>Notify if selected module to send parameters is a multi module.</desc>
+                    <param desc="Status" multiplicity="1" name="status" type="bool"/>
+                </event>
+                <event name="OnNewThreadFeedbackStatus">
+                    <desc>Notify current thread status.</desc>
+                    <param desc="Status of the module." multiplicity="1" name="status" type="string"/>
+                </event>
                 <function name="saveData">
                     <desc>Save current parameter set.</desc>
                     <return desc="Success of saving parameters." multiplicity="1" name="success" type="bool"/>
@@ -222,15 +276,41 @@ To make this permanent, it is needed to save the persistent data afterwards (see
                     <desc>Function to get info what parameter file is currently in use.</desc>
                     <return desc="Name of parameter file." multiplicity="1" name="parameterName" type="string"/>
                 </function>
+                <function name="setSelectedParameterWithinTableViaUI">
+                    <desc>Function to select parameter within UI.</desc>
+                    <param desc="Selection" multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="setParameterSelectionWithinTable">
+                    <desc>Function to set selected parameter within selected parameter set table.</desc>
+                    <param desc="Selection" multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="setNewValueForSelectedParameter">
+                    <desc>Function to preset value for selected parameter.</desc>
+                    <param desc="Value (can be string, nnumber or boolean)." multiplicity="1" name="value" type="auto"/>
+                </function>
+                <function name="setNewValueToParameterViaUI">
+                    <desc>Function to set preconfigured value to parameter.</desc>
+                </function>
+                <function name="setModuleToSendParameters">
+                    <desc>Function to select module to send parameters.</desc>
+                    <param desc="Module to select." multiplicity="1" name="selection" type="string"/>
+                </function>
+                <function name="sendParameterToModuleViaUI">
+                    <desc>Function to trigger a module to load currently selected parameters (optionally for specific instance). Needs to be preconfigured via 'setModuleToSendParameters' and (optionally) 'setModuleInstanceToSendParameters'.</desc>
+                </function>
+                <function name="setModuleInstanceToSendParameters">
+                    <desc>Function to select instance of selected module to send parameters.</desc>
+                    <param desc="Instance of module." multiplicity="1" name="selection" type="int"/>
+                </function>
             </serves>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">4.1.0</meta>
+        <meta key="version">4.2.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
         <meta key="crown2-flow-engine">false</meta>
-        <meta key="LuaLoadAllEngineAPI">true</meta>
+        <meta key="LuaLoadAllEngineAPI">false</meta>
         <entry default="CSK_Module_PersistentData.lua" path="scripts"/>
     </application>
 </manifest>

@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
 <meta name="author" content="SICK AG">
-<title>Documentation - CSK_Module_PersistentData 4.1.0</title>
+<title>Documentation - CSK_Module_PersistentData 4.2.0</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 /* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
@@ -615,11 +615,11 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Documentation - CSK_Module_PersistentData 4.1.0</h1>
+<h1>Documentation - CSK_Module_PersistentData 4.2.0</h1>
 <div class="details">
 <span id="author" class="author">SICK AG</span><br>
-<span id="revnumber">version 4.1.0,</span>
-<span id="revdate">2024-10-11</span>
+<span id="revnumber">version 4.2.0,</span>
+<span id="revdate">2025-01-24</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -658,9 +658,16 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 <li><a href="#API:Function:CSK_PersistentData.resetAllModules"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">resetAllModules()</span></a></li>
 <li><a href="#API:Function:CSK_PersistentData.saveAllModuleConfigs"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">saveAllModuleConfigs()</span></a></li>
 <li><a href="#API:Function:CSK_PersistentData.saveData"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">saveData()</span></a></li>
+<li><a href="#API:Function:CSK_PersistentData.sendParameterToModuleViaUI"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">sendParameterToModuleViaUI()</span></a></li>
+<li><a href="#API:Function:CSK_PersistentData.setModuleInstanceToSendParameters"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setModuleInstanceToSendParameters()</span></a></li>
 <li><a href="#API:Function:CSK_PersistentData.setModuleParameterName"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setModuleParameterName()</span></a></li>
+<li><a href="#API:Function:CSK_PersistentData.setModuleToSendParameters"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setModuleToSendParameters()</span></a></li>
+<li><a href="#API:Function:CSK_PersistentData.setNewValueForSelectedParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setNewValueForSelectedParameter()</span></a></li>
+<li><a href="#API:Function:CSK_PersistentData.setNewValueToParameterViaUI"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setNewValueToParameterViaUI()</span></a></li>
+<li><a href="#API:Function:CSK_PersistentData.setParameterSelectionWithinTable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setParameterSelectionWithinTable()</span></a></li>
 <li><a href="#API:Function:CSK_PersistentData.setPath"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setPath()</span></a></li>
 <li><a href="#API:Function:CSK_PersistentData.setSelectedParameterName"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setSelectedParameterName()</span></a></li>
+<li><a href="#API:Function:CSK_PersistentData.setSelectedParameterWithinTableViaUI"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setSelectedParameterWithinTableViaUI()</span></a></li>
 <li><a href="#API:Function:CSK_PersistentData.setUIStyle"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setUIStyle()</span></a></li>
 </ul>
 </li>
@@ -675,10 +682,23 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 <li><a href="#API:Event:CSK_PersistentData.OnNewFeedbackStatus"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewFeedbackStatus</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnNewParameterSelection"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewParameterSelection</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnNewParameterTableInfo"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewParameterTableInfo</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusBooleanValueOfSelecteParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusBooleanValueOfSelecteParameter</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnNewStatusCSKStyle"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusCSKStyle</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusListOfModules"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusListOfModules</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusListOfTableParameters"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusListOfTableParameters</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnNewStatusModuleIsActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusModuleIsActive</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnNewStatusModuleVersion"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusModuleVersion</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusNumberValueOfSelecteParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusNumberValueOfSelecteParameter</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusParameterTypeSelected"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusParameterTypeSelected</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedModuleInstanceToSendParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedModuleInstanceToSendParameter</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedModuleToSendParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedModuleToSendParameter</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedParameterIsTable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedParameterIsTable</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedParameterWithinTable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedParameterWithinTable</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectionIsMultiModule"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectionIsMultiModule</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusSendParametersToModule"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSendParametersToModule</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewStatusStringValueOfSelecteParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusStringValueOfSelecteParameter</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnNewStatusTempFileAvailable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusTempFileAvailable</span></a></li>
+<li><a href="#API:Event:CSK_PersistentData.OnNewThreadFeedbackStatus"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewThreadFeedbackStatus</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnNewUserManagementTrigger"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewUserManagementTrigger</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnResetAllModules"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnResetAllModules</span></a></li>
 <li><a href="#API:Event:CSK_PersistentData.OnUserLevelAdminActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelAdminActive</span></a></li>
@@ -710,11 +730,11 @@ h1,h2,h3,h4,h5,h6{color:#007cc1}
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Version</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">4.1.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4.2.0</p></td>
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Date</p></th>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2024-10-11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025-01-24</p></td>
 </tr>
 <tr>
 <th class="tableblock halign-left valign-top"><p class="tableblock">Author</p></th>
@@ -866,13 +886,34 @@ After that, do not forget to save the received data as stated in step 4.<br>
 <p><a href="#API:Function:CSK_PersistentData.saveData">saveData()</a></p>
 </li>
 <li>
+<p><a href="#API:Function:CSK_PersistentData.sendParameterToModuleViaUI">sendParameterToModuleViaUI()</a></p>
+</li>
+<li>
+<p><a href="#API:Function:CSK_PersistentData.setModuleInstanceToSendParameters">setModuleInstanceToSendParameters()</a></p>
+</li>
+<li>
 <p><a href="#API:Function:CSK_PersistentData.setModuleParameterName">setModuleParameterName()</a></p>
+</li>
+<li>
+<p><a href="#API:Function:CSK_PersistentData.setModuleToSendParameters">setModuleToSendParameters()</a></p>
+</li>
+<li>
+<p><a href="#API:Function:CSK_PersistentData.setNewValueForSelectedParameter">setNewValueForSelectedParameter()</a></p>
+</li>
+<li>
+<p><a href="#API:Function:CSK_PersistentData.setNewValueToParameterViaUI">setNewValueToParameterViaUI()</a></p>
+</li>
+<li>
+<p><a href="#API:Function:CSK_PersistentData.setParameterSelectionWithinTable">setParameterSelectionWithinTable()</a></p>
 </li>
 <li>
 <p><a href="#API:Function:CSK_PersistentData.setPath">setPath()</a></p>
 </li>
 <li>
 <p><a href="#API:Function:CSK_PersistentData.setSelectedParameterName">setSelectedParameterName()</a></p>
+</li>
+<li>
+<p><a href="#API:Function:CSK_PersistentData.setSelectedParameterWithinTableViaUI">setSelectedParameterWithinTableViaUI()</a></p>
 </li>
 <li>
 <p><a href="#API:Function:CSK_PersistentData.setUIStyle">setUIStyle()</a></p>
@@ -905,7 +946,16 @@ After that, do not forget to save the received data as stated in step 4.<br>
 <p><a href="#API:Event:CSK_PersistentData.OnNewParameterTableInfo">OnNewParameterTableInfo</a></p>
 </li>
 <li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusBooleanValueOfSelecteParameter">OnNewStatusBooleanValueOfSelecteParameter</a></p>
+</li>
+<li>
 <p><a href="#API:Event:CSK_PersistentData.OnNewStatusCSKStyle">OnNewStatusCSKStyle</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusListOfModules">OnNewStatusListOfModules</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusListOfTableParameters">OnNewStatusListOfTableParameters</a></p>
 </li>
 <li>
 <p><a href="#API:Event:CSK_PersistentData.OnNewStatusModuleIsActive">OnNewStatusModuleIsActive</a></p>
@@ -914,7 +964,37 @@ After that, do not forget to save the received data as stated in step 4.<br>
 <p><a href="#API:Event:CSK_PersistentData.OnNewStatusModuleVersion">OnNewStatusModuleVersion</a></p>
 </li>
 <li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusNumberValueOfSelecteParameter">OnNewStatusNumberValueOfSelecteParameter</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusParameterTypeSelected">OnNewStatusParameterTypeSelected</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedModuleInstanceToSendParameter">OnNewStatusSelectedModuleInstanceToSendParameter</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedModuleToSendParameter">OnNewStatusSelectedModuleToSendParameter</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedParameterIsTable">OnNewStatusSelectedParameterIsTable</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectedParameterWithinTable">OnNewStatusSelectedParameterWithinTable</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusSelectionIsMultiModule">OnNewStatusSelectionIsMultiModule</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusSendParametersToModule">OnNewStatusSendParametersToModule</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewStatusStringValueOfSelecteParameter">OnNewStatusStringValueOfSelecteParameter</a></p>
+</li>
+<li>
 <p><a href="#API:Event:CSK_PersistentData.OnNewStatusTempFileAvailable">OnNewStatusTempFileAvailable</a></p>
+</li>
+<li>
+<p><a href="#API:Event:CSK_PersistentData.OnNewThreadFeedbackStatus">OnNewThreadFeedbackStatus</a></p>
 </li>
 <li>
 <p><a href="#API:Event:CSK_PersistentData.OnNewUserManagementTrigger">OnNewUserManagementTrigger</a></p>
@@ -1740,15 +1820,76 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Function:CSK_PersistentData.setModuleParameterName"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setModuleParameterName()</span></h5>
+<h5 id="API:Function:CSK_PersistentData.sendParameterToModuleViaUI"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">sendParameterToModuleViaUI()</span></h5>
 <div class="sect5">
 <h6 id="_short_description_23">Short description</h6>
+<div class="paragraph">
+<p>Function to trigger a module to load currently selected parameters (optionally for specific instance). Needs to be preconfigured via 'setModuleToSendParameters' and (optionally) 'setModuleInstanceToSendParameters'.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_21">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.sendParameterToModuleViaUI()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Function:CSK_PersistentData.setModuleInstanceToSendParameters"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setModuleInstanceToSendParameters()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_24">Short description</h6>
+<div class="paragraph">
+<p>Function to select instance of selected module to send parameters.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_8">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">selection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance of module.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_22">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setModuleInstanceToSendParameters(selection)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Function:CSK_PersistentData.setModuleParameterName"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setModuleParameterName()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_25">Short description</h6>
 <div class="paragraph">
 <p>Set parameter name for a module.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_8">Parameters</h6>
+<h6 id="_parameters_9">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1799,7 +1940,7 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_21">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_23">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setModuleParameterName(module, name, loadOnReboot, instance, totalInstances)</code></pre>
@@ -1808,15 +1949,164 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 </div>
 </div>
 <div class="sect4">
+<h5 id="API:Function:CSK_PersistentData.setModuleToSendParameters"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setModuleToSendParameters()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_26">Short description</h6>
+<div class="paragraph">
+<p>Function to select module to send parameters.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_10">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">selection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module to select.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_24">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setModuleToSendParameters(selection)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Function:CSK_PersistentData.setNewValueForSelectedParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setNewValueForSelectedParameter()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_27">Short description</h6>
+<div class="paragraph">
+<p>Function to preset value for selected parameter.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_11">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AUTO</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value (can be string, nnumber or boolean).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_25">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setNewValueForSelectedParameter(value)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Function:CSK_PersistentData.setNewValueToParameterViaUI"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setNewValueToParameterViaUI()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_28">Short description</h6>
+<div class="paragraph">
+<p>Function to set preconfigured value to parameter.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_26">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setNewValueToParameterViaUI()</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Function:CSK_PersistentData.setParameterSelectionWithinTable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setParameterSelectionWithinTable()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_29">Short description</h6>
+<div class="paragraph">
+<p>Function to set selected parameter within selected parameter set table.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_12">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">selection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selection</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_27">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setParameterSelectionWithinTable(selection)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
 <h5 id="API:Function:CSK_PersistentData.setPath"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setPath()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_24">Short description</h6>
+<h6 id="_short_description_30">Short description</h6>
 <div class="paragraph">
 <p>Set the path to load/save the parameter set.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_9">Parameters</h6>
+<h6 id="_parameters_13">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1843,7 +2133,7 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_22">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_28">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setPath(path)</code></pre>
@@ -1854,13 +2144,13 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 <div class="sect4">
 <h5 id="API:Function:CSK_PersistentData.setSelectedParameterName"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setSelectedParameterName()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_25">Short description</h6>
+<h6 id="_short_description_31">Short description</h6>
 <div class="paragraph">
 <p>Select dataset to list its parameters.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_10">Parameters</h6>
+<h6 id="_parameters_14">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1887,7 +2177,7 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_23">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_29">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setSelectedParameterName(selection)</code></pre>
@@ -1896,15 +2186,59 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 </div>
 </div>
 <div class="sect4">
+<h5 id="API:Function:CSK_PersistentData.setSelectedParameterWithinTableViaUI"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setSelectedParameterWithinTableViaUI()</span></h5>
+<div class="sect5">
+<h6 id="_short_description_32">Short description</h6>
+<div class="paragraph">
+<p>Function to select parameter within UI.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_parameters_15">Parameters</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">selection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Selection</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_30">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setSelectedParameterWithinTableViaUI(selection)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
 <h5 id="API:Function:CSK_PersistentData.setUIStyle"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-function">setUIStyle()</span></h5>
 <div class="sect5">
-<h6 id="_short_description_26">Short description</h6>
+<h6 id="_short_description_33">Short description</h6>
 <div class="paragraph">
 <p>Function to set UI style.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_parameters_11">Parameters</h6>
+<h6 id="_parameters_16">Parameters</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1931,7 +2265,7 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_24">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_31">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua">CSK_PersistentData.setUIStyle(style)</code></pre>
@@ -1945,13 +2279,13 @@ To make this permanent, it is needed to save the persistent data afterwards (see
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnInitialDataLoaded"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnInitialDataLoaded</span></h5>
 <div class="sect5">
-<h6 id="_short_description_27">Short description</h6>
+<h6 id="_short_description_34">Short description</h6>
 <div class="paragraph">
 <p>Notify that inital parameter set was loaded after app/device reboot.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_25">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_32">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnInitialDataLoaded</span>()
@@ -1966,7 +2300,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnInstanceAmountAvailable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnInstanceAmountAvailable</span></h5>
 <div class="sect5">
-<h6 id="_short_description_28">Short description</h6>
+<h6 id="_short_description_35">Short description</h6>
 <div class="paragraph">
 <p>Notify if amount of instances are available.</p>
 </div>
@@ -1999,7 +2333,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_26">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_33">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnInstanceAmountAvailable</span>(status)
@@ -2014,7 +2348,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewContent"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewContent</span></h5>
 <div class="sect5">
-<h6 id="_short_description_29">Short description</h6>
+<h6 id="_short_description_36">Short description</h6>
 <div class="paragraph">
 <p>Notify new content in parameter set.</p>
 </div>
@@ -2047,7 +2381,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_27">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_34">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewContent</span>(list)
@@ -2062,7 +2396,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewDataPath"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewDataPath</span></h5>
 <div class="sect5">
-<h6 id="_short_description_30">Short description</h6>
+<h6 id="_short_description_37">Short description</h6>
 <div class="paragraph">
 <p>Notify path of parameter set.</p>
 </div>
@@ -2095,7 +2429,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_28">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_35">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewDataPath</span>(parameterPath)
@@ -2110,7 +2444,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewDatasetList"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewDatasetList</span></h5>
 <div class="sect5">
-<h6 id="_short_description_31">Short description</h6>
+<h6 id="_short_description_38">Short description</h6>
 <div class="paragraph">
 <p>Notify list of dataset entries.</p>
 </div>
@@ -2143,7 +2477,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_29">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_36">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewDatasetList</span>(list)
@@ -2158,7 +2492,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewDataToLoad"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewDataToLoad</span></h5>
 <div class="sect5">
-<h6 id="_short_description_32">Short description</h6>
+<h6 id="_short_description_39">Short description</h6>
 <div class="paragraph">
 <p>Notify event to trigger other modules to load their related data.</p>
 </div>
@@ -2192,7 +2526,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_30">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_37">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewDataToLoad</span>(data)
@@ -2207,7 +2541,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewFeedbackStatus"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewFeedbackStatus</span></h5>
 <div class="sect5">
-<h6 id="_short_description_33">Short description</h6>
+<h6 id="_short_description_40">Short description</h6>
 <div class="paragraph">
 <p>Notify current module status.</p>
 </div>
@@ -2240,7 +2574,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_31">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_38">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewFeedbackStatus</span>(status)
@@ -2255,7 +2589,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewParameterSelection"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewParameterSelection</span></h5>
 <div class="sect5">
-<h6 id="_short_description_34">Short description</h6>
+<h6 id="_short_description_41">Short description</h6>
 <div class="paragraph">
 <p>Notify current parameter dataset selection. E.g. used within the UI to select what content to show.</p>
 </div>
@@ -2288,7 +2622,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_32">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_39">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewParameterSelection</span>(parameterName)
@@ -2303,7 +2637,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 <div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewParameterTableInfo"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewParameterTableInfo</span></h5>
 <div class="sect5">
-<h6 id="_short_description_35">Short description</h6>
+<h6 id="_short_description_42">Short description</h6>
 <div class="paragraph">
 <p>Notify table info of parameters. Used within the UI to show content.</p>
 </div>
@@ -2336,7 +2670,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_33">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_40">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewParameterTableInfo</span>(content)
@@ -2349,15 +2683,63 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </div>
 </div>
 <div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusBooleanValueOfSelecteParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusBooleanValueOfSelecteParameter</span></h5>
+<div class="sect5">
+<h6 id="_short_description_43">Short description</h6>
+<div class="paragraph">
+<p>Notify string value of currently selected parameter.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_9">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_41">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusBooleanValueOfSelecteParameter</span>(value)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusBooleanValueOfSelecteParameter</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusBooleanValueOfSelecteParameter</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
 <h5 id="API:Event:CSK_PersistentData.OnNewStatusCSKStyle"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusCSKStyle</span></h5>
 <div class="sect5">
-<h6 id="_short_description_36">Short description</h6>
+<h6 id="_short_description_44">Short description</h6>
 <div class="paragraph">
 <p>Notify UI style to use for CSK modules.</p>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_callback_arguments_9">Callback arguments</h6>
+<h6 id="_callback_arguments_10">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -2384,7 +2766,7 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_34">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_42">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusCSKStyle</span>(theme)
@@ -2397,59 +2779,11 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnNewStatusModuleIsActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusModuleIsActive</span></h5>
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusListOfModules"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusListOfModules</span></h5>
 <div class="sect5">
-<h6 id="_short_description_37">Short description</h6>
+<h6 id="_short_description_45">Short description</h6>
 <div class="paragraph">
-<p>Notify if module can be used on device.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_callback_arguments_10">Callback arguments</h6>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 25%;">
-<col style="width: 25%;">
-<col style="width: 12.5%;">
-<col style="width: 37.5%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Multiplicity</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_35">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleIsActive</span>(status)
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnNewStatusModuleVersion"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusModuleVersion</span></h5>
-<div class="sect5">
-<h6 id="_short_description_38">Short description</h6>
-<div class="paragraph">
-<p>Notify version of module.</p>
+<p>Notify list of available CSK modules.</p>
 </div>
 </div>
 <div class="sect5">
@@ -2471,33 +2805,33 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of CSK modules.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_36">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_43">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleVersion</span>(version)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusListOfModules</span>(list)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusListOfModules</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusListOfModules</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnNewStatusTempFileAvailable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusTempFileAvailable</span></h5>
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusListOfTableParameters"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusListOfTableParameters</span></h5>
 <div class="sect5">
-<h6 id="_short_description_39">Short description</h6>
+<h6 id="_short_description_46">Short description</h6>
 <div class="paragraph">
-<p>Notify if temporary uploaded parameter file is available.</p>
+<p>Notify list of parameter names within parameter table.</p>
 </div>
 </div>
 <div class="sect5">
@@ -2519,75 +2853,33 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of parameter names.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_37">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_44">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusTempFileAvailable</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusListOfTableParameters</span>(list)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusTempFileAvailable</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusTempFileAvailable</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusListOfTableParameters</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusListOfTableParameters</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnNewUserManagementTrigger"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewUserManagementTrigger</span></h5>
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusModuleIsActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusModuleIsActive</span></h5>
 <div class="sect5">
-<h6 id="_short_description_40">Short description</h6>
+<h6 id="_short_description_47">Short description</h6>
 <div class="paragraph">
-<p>Notify trigger to update UserManagement status.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_38">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewUserManagementTrigger</span>()
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewUserManagementTrigger</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewUserManagementTrigger</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnResetAllModules"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnResetAllModules</span></h5>
-<div class="sect5">
-<h6 id="_short_description_41">Short description</h6>
-<div class="paragraph">
-<p>Notify event to trigger a reset for all CSK modules.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_sample_auto_generated_39">Sample (auto-generated)</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnResetAllModules</span>()
-  <span class="comment">-- Do something</span>
-<span class="keyword">end</span>
-
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnResetAllModules</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnResetAllModules</span><span class="delimiter">&quot;</span></span>)</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnUserLevelAdminActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelAdminActive</span></h5>
-<div class="sect5">
-<h6 id="_short_description_42">Short description</h6>
-<div class="paragraph">
-<p>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+<p>Notify if module can be used on device.</p>
 </div>
 </div>
 <div class="sect5">
@@ -2618,24 +2910,24 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_40">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_45">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelAdminActive</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleIsActive</span>(status)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnUserLevelAdminActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnUserLevelAdminActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleIsActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnUserLevelMaintenanceActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelMaintenanceActive</span></h5>
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusModuleVersion"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusModuleVersion</span></h5>
 <div class="sect5">
-<h6 id="_short_description_43">Short description</h6>
+<h6 id="_short_description_48">Short description</h6>
 <div class="paragraph">
-<p>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+<p>Notify version of module.</p>
 </div>
 </div>
 <div class="sect5">
@@ -2657,33 +2949,33 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Version</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_41">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_46">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelMaintenanceActive</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusModuleVersion</span>(version)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnUserLevelMaintenanceActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnUserLevelMaintenanceActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusModuleVersion</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnUserLevelOperatorActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelOperatorActive</span></h5>
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusNumberValueOfSelecteParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusNumberValueOfSelecteParameter</span></h5>
 <div class="sect5">
-<h6 id="_short_description_44">Short description</h6>
+<h6 id="_short_description_49">Short description</h6>
 <div class="paragraph">
-<p>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+<p>Notify number value of currently selected parameter.</p>
 </div>
 </div>
 <div class="sect5">
@@ -2705,37 +2997,181 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FLOAT</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_42">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_47">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelOperatorActive</span>(status)
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusNumberValueOfSelecteParameter</span>(value)
   <span class="comment">-- Do something</span>
 <span class="keyword">end</span>
 
-Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnUserLevelOperatorActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnUserLevelOperatorActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusNumberValueOfSelecteParameter</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusNumberValueOfSelecteParameter</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="API:Event:CSK_PersistentData.OnUserLevelServiceActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelServiceActive</span></h5>
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusParameterTypeSelected"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusParameterTypeSelected</span></h5>
 <div class="sect5">
-<h6 id="_short_description_45">Short description</h6>
+<h6 id="_short_description_50">Short description</h6>
 <div class="paragraph">
-<p>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+<p>Notify what parameter type was selected within a parameter set.</p>
 </div>
 </div>
 <div class="sect5">
 <h6 id="_callback_arguments_16">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parameterType</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Type of parameter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_48">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusParameterTypeSelected</span>(parameterType)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusParameterTypeSelected</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusParameterTypeSelected</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusSelectedModuleInstanceToSendParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedModuleInstanceToSendParameter</span></h5>
+<div class="sect5">
+<h6 id="_short_description_51">Short description</h6>
+<div class="paragraph">
+<p>Notify instance of preselected module to send currently selected parameter.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_17">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Instance identifier.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_49">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSelectedModuleInstanceToSendParameter</span>(instance)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusSelectedModuleInstanceToSendParameter</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSelectedModuleInstanceToSendParameter</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusSelectedModuleToSendParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedModuleToSendParameter</span></h5>
+<div class="sect5">
+<h6 id="_short_description_52">Short description</h6>
+<div class="paragraph">
+<p>Notify preselected module to send currently selected parameter.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_18">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">module</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_50">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSelectedModuleToSendParameter</span>(module)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusSelectedModuleToSendParameter</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSelectedModuleToSendParameter</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusSelectedParameterIsTable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedParameterIsTable</span></h5>
+<div class="sect5">
+<h6 id="_short_description_53">Short description</h6>
+<div class="paragraph">
+<p>Notfiy if currently selected parameter holds table data.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_19">Callback arguments</h6>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -2762,7 +3198,541 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </table>
 </div>
 <div class="sect5">
-<h6 id="_sample_auto_generated_43">Sample (auto-generated)</h6>
+<h6 id="_sample_auto_generated_51">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSelectedParameterIsTable</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusSelectedParameterIsTable</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSelectedParameterIsTable</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusSelectedParameterWithinTable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectedParameterWithinTable</span></h5>
+<div class="sect5">
+<h6 id="_short_description_54">Short description</h6>
+<div class="paragraph">
+<p>Notify name of selected parameter within parameter table.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_20">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_52">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSelectedParameterWithinTable</span>(name)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusSelectedParameterWithinTable</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSelectedParameterWithinTable</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusSelectionIsMultiModule"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSelectionIsMultiModule</span></h5>
+<div class="sect5">
+<h6 id="_short_description_55">Short description</h6>
+<div class="paragraph">
+<p>Notify if selected module to send parameters is a multi module.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_21">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_53">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSelectionIsMultiModule</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusSelectionIsMultiModule</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSelectionIsMultiModule</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusSendParametersToModule"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusSendParametersToModule</span></h5>
+<div class="sect5">
+<h6 id="_short_description_56">Short description</h6>
+<div class="paragraph">
+<p>Notify event to trigger a module to load specific parameters.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_22">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">moduleName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">parameterName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of parameters to load.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">INT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">?</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optional number of instance of module.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_54">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusSendParametersToModule</span>(moduleName, parameterName, instance)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusSendParametersToModule</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusSendParametersToModule</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusStringValueOfSelecteParameter"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusStringValueOfSelecteParameter</span></h5>
+<div class="sect5">
+<h6 id="_short_description_57">Short description</h6>
+<div class="paragraph">
+<p>Notify string value of currently selected parameter.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_23">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">value</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Value</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_55">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusStringValueOfSelecteParameter</span>(value)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusStringValueOfSelecteParameter</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusStringValueOfSelecteParameter</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewStatusTempFileAvailable"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewStatusTempFileAvailable</span></h5>
+<div class="sect5">
+<h6 id="_short_description_58">Short description</h6>
+<div class="paragraph">
+<p>Notify if temporary uploaded parameter file is available.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_24">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_56">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewStatusTempFileAvailable</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewStatusTempFileAvailable</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewStatusTempFileAvailable</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewThreadFeedbackStatus"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewThreadFeedbackStatus</span></h5>
+<div class="sect5">
+<h6 id="_short_description_59">Short description</h6>
+<div class="paragraph">
+<p>Notify current thread status.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_25">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">STRING</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status of the module.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_57">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewThreadFeedbackStatus</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewThreadFeedbackStatus</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewThreadFeedbackStatus</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnNewUserManagementTrigger"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnNewUserManagementTrigger</span></h5>
+<div class="sect5">
+<h6 id="_short_description_60">Short description</h6>
+<div class="paragraph">
+<p>Notify trigger to update UserManagement status.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_58">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnNewUserManagementTrigger</span>()
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnNewUserManagementTrigger</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnNewUserManagementTrigger</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnResetAllModules"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnResetAllModules</span></h5>
+<div class="sect5">
+<h6 id="_short_description_61">Short description</h6>
+<div class="paragraph">
+<p>Notify event to trigger a reset for all CSK modules.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_59">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnResetAllModules</span>()
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnResetAllModules</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnResetAllModules</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnUserLevelAdminActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelAdminActive</span></h5>
+<div class="sect5">
+<h6 id="_short_description_62">Short description</h6>
+<div class="paragraph">
+<p>Status of Admin userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_26">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_60">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelAdminActive</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnUserLevelAdminActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnUserLevelAdminActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnUserLevelMaintenanceActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelMaintenanceActive</span></h5>
+<div class="sect5">
+<h6 id="_short_description_63">Short description</h6>
+<div class="paragraph">
+<p>Status of Maintenance userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_27">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_61">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelMaintenanceActive</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnUserLevelMaintenanceActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnUserLevelMaintenanceActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnUserLevelOperatorActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelOperatorActive</span></h5>
+<div class="sect5">
+<h6 id="_short_description_64">Short description</h6>
+<div class="paragraph">
+<p>Status of Operator userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_28">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_62">Sample (auto-generated)</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelOperatorActive</span>(status)
+  <span class="comment">-- Do something</span>
+<span class="keyword">end</span>
+
+Script.register(<span class="string"><span class="delimiter">&quot;</span><span class="content">CSK_PersistentData.OnUserLevelOperatorActive</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">handleOnUserLevelOperatorActive</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="API:Event:CSK_PersistentData.OnUserLevelServiceActive"><span class="breadcrumb">CSK_PersistentData.</span><span class="api-event">OnUserLevelServiceActive</span></h5>
+<div class="sect5">
+<h6 id="_short_description_65">Short description</h6>
+<div class="paragraph">
+<p>Status of Service userlevel. Used internally in combination with the CSK_UserManagement module if available.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_callback_arguments_29">Callback arguments</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Multiplicity</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BOOL</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_sample_auto_generated_63">Sample (auto-generated)</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="lua"><span class="keyword">function</span> <span class="function">handleOnUserLevelServiceActive</span>(status)
@@ -2781,8 +3751,8 @@ Script.register(<span class="string"><span class="delimiter">&quot;</span><span 
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 4.1.0<br>
-Last updated 2024-10-11 12:31:12 +0200
+Version 4.2.0<br>
+Last updated 2025-01-24 10:43:07 +0100
 </div>
 </div>
 <script type="text/javascript">
