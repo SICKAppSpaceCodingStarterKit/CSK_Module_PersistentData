@@ -6,13 +6,12 @@
         <layout-row id="RowLayout7">
             <layout-column id="ColumnLayout8" style="align-items: stretch">
                 <layout-row id="RowLayout01" style="align-items: baseline">
-                    <davinci-value-display id="VD_Title" class="myCustomLabel_CSK_Module_PersistentData"
-                        value="Persistent Data">
-                    </davinci-value-display>
+                    <h1 id="Heading_Title" class="myCustomLabel_CSK_Module_PersistentData">
+                        Persistent Data
+                    </h1>
                     <davinci-value-display id="VD_Version" class="myCustomSpacerVert20_CSK_Module_PersistentData">
-                        <crown-edpws-binding property="value" name="CSK_PersistentData/OnNewStatusModuleVersion"
-                            update-on-resume>
-                        </crown-edpws-binding>
+                        <crown-on property="value" crown-event="CSK_PersistentData/OnNewStatusModuleVersion">
+                        </crown-on>
                     </davinci-value-display>
                 </layout-row>
             </layout-column>
@@ -128,7 +127,8 @@
                                                                             <crown-set event="finished"
                                                                                 crown-function="CSK_PersistentData/fileUploadFinished"
                                                                                 protocol="crownMSGPACK"
-                                                                                crown-path="status">
+                                                                                crown-path="status"
+                                                                                converter="(value)=>{console.log(`event finished ${JSON.stringify(value)}`); return typeof value == 'boolean' ? value : value.success;}">
                                                                             </crown-set>
                                                                         </appspace-file-upload-button>
                                                                     </layout-column>
@@ -136,9 +136,11 @@
                                                                         style="align-items: center">
                                                                         <davinci-button id="B_OverwriteData"
                                                                             class="myCustomButton_CSK_Module_PersistentData"
-                                                                            type="outline" icon-position="append"
-                                                                            title="Overwrite current persistent data file with uploaded one."
-                                                                            icon="notification/system_update">
+                                                                            type="outline"
+                                                                            title="Overwrite current persistent data file with uploaded one.">
+                                                                            <davinci-icon
+                                                                                icon="notification/system_update">
+                                                                            </davinci-icon>
                                                                             <span></span>
                                                                             <crown-edpws-binding property="disabled"
                                                                                 name="CSK_PersistentData/OnNewStatusTempFileAvailable"
@@ -175,9 +177,10 @@
                                                                         style="align-items: center">
                                                                         <davinci-button id="B_Reset"
                                                                             class="myCustomButton_CSK_Module_PersistentData"
-                                                                            type="outline" icon-position="append"
-                                                                            icon="content/clear"
+                                                                            type="outline"
                                                                             title="Reset config of all modules">
+                                                                            <davinci-icon icon="content/clear">
+                                                                            </davinci-icon>
                                                                             <span></span>
                                                                             <crown-binding event="submit"
                                                                                 name="CSK_PersistentData/resetAllModules"
@@ -189,9 +192,10 @@
                                                                         style="align-items: center">
                                                                         <davinci-button id="B_RemoveAll"
                                                                             class="myCustomButton_CSK_Module_PersistentData"
-                                                                            type="outline" icon-position="append"
-                                                                            icon="content/delete_sweep"
+                                                                            type="outline"
                                                                             title="Remove full DataSet. Save Persistent Data afterwards to make this permanent.">
+                                                                            <davinci-icon icon="content/delete_sweep">
+                                                                            </davinci-icon>
                                                                             <span></span>
                                                                             <crown-binding event="submit"
                                                                                 name="CSK_PersistentData/removeData"
@@ -203,9 +207,10 @@
                                                                         style="align-items: center">
                                                                         <davinci-button id="B_LoadData"
                                                                             class="myCustomButton_CSK_Module_PersistentData"
-                                                                            type="outline" icon-position="append"
-                                                                            title="Load Persistent Data file and trigger other modules to load their parameters (if their 'Load on reboot' flag is active."
-                                                                            icon="action/history">
+                                                                            type="outline"
+                                                                            title="Load Persistent Data file and trigger other modules to load their parameters (if their 'Load on reboot' flag is active.">
+                                                                            <davinci-icon icon="action/history">
+                                                                            </davinci-icon>
                                                                             <span></span>
                                                                             <crown-binding event="submit"
                                                                                 name="CSK_PersistentData/loadContent"
@@ -217,9 +222,9 @@
                                                                         style="align-items: center">
                                                                         <davinci-button id="B_SaveData"
                                                                             class="myCustomButton_CSK_Module_PersistentData"
-                                                                            type="outline" icon-position="append"
-                                                                            icon="content/save"
-                                                                            title="Save Persistent Data">
+                                                                            type="outline" title="Save Persistent Data">
+                                                                            <davinci-icon icon="content/save">
+                                                                            </davinci-icon>
                                                                             <span></span>
                                                                             <crown-binding event="submit"
                                                                                 name="CSK_PersistentData/saveData"
@@ -231,9 +236,10 @@
                                                                         style="align-items: center">
                                                                         <davinci-button id="Button_SaveAll"
                                                                             class="myCustomButton_CSK_Module_PersistentData"
-                                                                            type="neutral" icon-position="append"
-                                                                            title="Trigger all modules to save parameter. All CSK modules will save their configuration and additionally activate their ' Load config on app start' flag."
-                                                                            icon="content/save">
+                                                                            type="neutral"
+                                                                            title="Trigger all modules to save parameter. All CSK modules will save their configuration and additionally activate their ' Load config on app start' flag.">
+                                                                            <davinci-icon icon="content/save">
+                                                                            </davinci-icon>
                                                                             <span>ALL</span>
                                                                             <crown-binding event="submit"
                                                                                 name="CSK_PersistentData/saveAllModuleConfigs"
@@ -277,9 +283,8 @@
                                                                 style="align-items: center">
                                                                 <davinci-button id="B_RemoveDataEntry"
                                                                     class="myCustomButton_CSK_Module_PersistentData"
-                                                                    type="outline" icon-position="append"
-                                                                    title="Remove selected parameter"
-                                                                    icon="action/delete">
+                                                                    type="outline" title="Remove selected parameter">
+                                                                    <davinci-icon icon="action/delete"></davinci-icon>
                                                                     <span></span>
                                                                     <crown-binding event="submit"
                                                                         name="CSK_PersistentData/removeParameterViaUI"
@@ -361,9 +366,10 @@
                                                                             style="align-items: center">
                                                                             <davinci-button id="Button_SendParameters"
                                                                                 class="myCustomButton_CSK_Module_PersistentData"
-                                                                                type="outline" icon-position="append"
-                                                                                icon="content/send"
+                                                                                type="outline"
                                                                                 title="Trigger selected module (opt. specific instance of it) to load selected parameter.">
+                                                                                <davinci-icon icon="content/send">
+                                                                                </davinci-icon>
                                                                                 <span></span>
                                                                                 <crown-binding event="submit"
                                                                                     name="CSK_PersistentData/sendParameterToModuleViaUI"
@@ -419,9 +425,10 @@
                                                                                     id="Button_EditStringValue"
                                                                                     class="myCustomButton_CSK_Module_PersistentData"
                                                                                     type="outline"
-                                                                                    icon-position="append"
-                                                                                    icon="navigation/check"
                                                                                     title="Write new value. You need to save the parameters to make this change persistent.">
+                                                                                    <davinci-icon
+                                                                                        icon="navigation/check">
+                                                                                    </davinci-icon>
                                                                                     <span></span>
                                                                                     <crown-binding event="submit"
                                                                                         name="CSK_PersistentData/setNewValueToParameterViaUI"
@@ -470,9 +477,10 @@
                                                                                     id="Button_EditNumberValue"
                                                                                     class="myCustomButton_CSK_Module_PersistentData"
                                                                                     type="outline"
-                                                                                    icon-position="append"
-                                                                                    icon="navigation/check"
                                                                                     title="Write new value. You need to save the parameters to make this change persistent.">
+                                                                                    <davinci-icon
+                                                                                        icon="navigation/check">
+                                                                                    </davinci-icon>
                                                                                     <span></span>
                                                                                     <crown-binding event="submit"
                                                                                         name="CSK_PersistentData/setNewValueToParameterViaUI"
@@ -525,9 +533,10 @@
                                                                                     id="Button_EditBooleanValue"
                                                                                     class="myCustomButton_CSK_Module_PersistentData"
                                                                                     type="outline"
-                                                                                    icon-position="append"
-                                                                                    icon="navigation/check"
                                                                                     title="Write new value. You need to save the parameters to make this change persistent.">
+                                                                                    <davinci-icon
+                                                                                        icon="navigation/check">
+                                                                                    </davinci-icon>
                                                                                     <span></span>
                                                                                     <crown-binding event="submit"
                                                                                         name="CSK_PersistentData/setNewValueToParameterViaUI"
@@ -654,8 +663,8 @@
                                                 <layout-row id="RowLayout21" style="justify-content: center">
                                                     <davinci-button id="Button_ReloadApps"
                                                         class="myCustomButton_CSK_Module_PersistentData" type="accent"
-                                                        icon-position="append" icon="navigation/refresh"
                                                         title="Reload all apps.">
+                                                        <davinci-icon icon="navigation/refresh"></davinci-icon>
                                                         <span></span>
                                                         <crown-binding event="submit"
                                                             name="CSK_PersistentData/reloadApps" auto-commit>
@@ -663,8 +672,8 @@
                                                     </davinci-button>
                                                     <davinci-button id="Button_RebootDevice"
                                                         class="myCustomButton_CSK_Module_PersistentData" type="accent"
-                                                        icon-position="append" title="Reboot device"
-                                                        icon="action/power_settings_new">
+                                                        title="Reboot device">
+                                                        <davinci-icon icon="action/power_settings_new"></davinci-icon>
                                                         <span></span>
                                                         <crown-binding event="submit"
                                                             name="CSK_PersistentData/rebootDevice" auto-commit>
