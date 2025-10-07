@@ -559,8 +559,8 @@ local function setNewValueToParameterViaUI()
   -- Set new value
   if persistentData_Model.currentlySelectedParameterValue ~= '' and persistentData_Model.currentlySelectedParameterValue ~= nil then
     if persistentData_Model.currentlySelectedParameterNameOfTable ~= '' then
-      if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable] then
-        if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable] then
+      if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable] ~= nil then
+        if persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable] ~= nil then
           if persistentData_Model.currentlySelectedParameterWithinSubTable ~= '' then
             local checkValue = persistentData_Model.data[persistentData_Model.currentlySelectedDataSet][persistentData_Model.currentlySelectedParameterNameOfTable][persistentData_Model.currentlySelectedParameterNameOfSubTable][persistentData_Model.currentlySelectedParameterWithinSubTable]
             if checkValue ~= nil then
